@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "moduleResolution": "node",
+    "module": "amd",
+    "target": "es5",
+    "downlevelIteration": true,
+    "allowJs": true
+  }
+}
