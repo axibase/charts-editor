@@ -1,6 +1,4 @@
-// custom-completion.js
 
-/* eslint-disable no-template-curly-in-string */
 export default [
   /** * Built-in function */
   {

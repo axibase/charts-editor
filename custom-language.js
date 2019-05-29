@@ -1,72 +1,49 @@
-// custom-language.js
-/* eslint-disable no-useless-escape */
+const sections = [
+  "column",
+  "configuration",
+  "dropdown",
+  "group",
+  "keys",
+  "link",
+  "node",
+  "option",
+  "other",
+  "placeholders",
+  "properties",
+  "property",
+  "series",
+  "tag",
+  "tags",
+  "threshold",
+  "widget"
+];
+
+const keywords = [
+  "script",
+  "endscript",
+  "import",
+  "csv",
+  "endcsv",
+  "endvar",
+  "for",
+  "endfor",
+  "list",
+  "endlist",
+  "if",
+  "endif"
+];
+
+const boolean = ["true", "false"];
+
 export default {
-  // Set defaultToken to invalid to see what you do not tokenize yet
-  // defaultToken: 'invalid',
-  keywords: ["IF", "THEN", "END", "WHILE", "DO", "ELSE"],
-  typeKeywords: [],
-  operators: ["=", ">", "<", "==", "<=", ">=", "!=", "<>", "+", "-", "*", "/"],
-  digits: /\d+(_+\d+)*/,
-  octaldigits: /[0-7]+(_+[0-7]+)*/,
-  binarydigits: /[0-1]+(_+[0-1]+)*/,
-  hexdigits: /[[0-9a-fA-F]+(_+[0-9a-fA-F]+)*/,
-  // The main tokenizer for our languages
   tokenizer: {
     root: [
-      // identifiers and keywords
-      [
-        /[a-z_$][\w$]*/,
-        {
-          cases: {
-            "@typeKeywords": "keyword",
-            "@keywords": "keyword",
-            "@default": "identifier"
-          }
-        }
-      ],
-      [/[A-Z][\w\$]*/, "type.identifier"], // to show class names nicely
-      // whitespace
-      { include: "@whitespace" },
-      // delimiters and operators
-      [/[{}()\[\]]/, "@brackets"],
-      // @ annotations.
-      // As an example, we emit a debugging log message on these tokens.
-      // Note: message are supressed during the first load -- change some lines to see them.
-      // eslint-disable-next-line no-useless-escape
-      [
-        /@\s*[a-zA-Z_\$][\w\$]*/,
-        { token: "annotation", log: "annotation token: $0" }
-      ],
-      // numbers
-      [/\d*\.\d+([eE][\-+]?\d+)?/, "number.float"],
-      [/0[xX][0-9a-fA-F]+/, "number.hex"],
-      [/\d+/, "number"],
-      // delimiter: after number because of .\d floats
-      [/[;,.]/, "delimiter"],
-      // strings
-      [/"([^"\\]|\\.)*$/, "string.invalid"],
-      // non-teminated string
-      [/"/, { token: "string.quote", bracket: "@open", next: "@string" }],
-      // characters
-      [/'[^\\']'/, "string"],
-      [/'/, "string.invalid"]
-    ],
-    comment: [
-      [/[^\/*]+/, "comment"],
-      [/\/\*/, "comment", "@push"],
-      // nested comment
-      ["\\*/", "comment", "@pop"],
-      [/[\/*]/, "comment"]
-    ],
-    string: [
-      [/[^\\"]+/, "string"],
-      [/\\./, "string.escape.invalid"],
-      [/"/, { token: "string.quote", bracket: "@close", next: "@pop" }]
-    ],
-    whitespace: [
-      [/[ \t\r\n]+/, "white"],
-      [/\/\*/, "comment", "@comment"],
-      [/\/\/.*$/, "comment"]
+      [new RegExp(`^[ \t]*[[${sections.join("|")}]+]`), "keyword"],
+      [new RegExp(`^[ \t]*(${keywords.join("|")})`), "keyword"],
+      [new RegExp(`@{.*}`), "placeholder"],
+      [new RegExp(`(${boolean.join('|')})`), "boolean"],
+      [/\d*\.*\d+([eE][\-+]?\d+)?/, "numeric"],
+      // [/?:(=\s\s*([\S\s]+))/, "value"]
     ]
   }
 };
