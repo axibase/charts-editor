@@ -18,16 +18,27 @@ monaco.editor.defineTheme("chartsTheme", {
   rules: [
     { token: "boolean", foreground: "221199" },
     { token: "keyword", foreground: "221199" },
-    { token: "numeric", foreground: "116644" },
+    { token: "numeric", foreground: "68AA89" },
     { token: "placeholder", foreground: "9DC7E7" },
-    { token: "value", foreground: "800000" }
+    { token: "comment", foreground: "42830B" },
+    { token: "quoted-string", foreground: "AA322B" },
+    { token: "value", foreground: "F3DB90" }
   ]
 });
 
 // Create editor
 monaco.editor.create(document.getElementById("container"), {
   theme: "chartsTheme",
-  value: `[configuration]
+  value: `/*
+  Controls at the top allow you to
+  recompute aggregate statistics on-the-fly,
+  without reloading the dataset.
+
+  To calculate aggregates on the server, set
+  server-aggregate = true 
+*/
+
+[configuration]
   height-units = 4
   width-units = 1
   offset-right = 40
@@ -36,6 +47,8 @@ monaco.editor.create(document.getElementById("container"), {
   markers = false
   entity = fred.stlouisfed.org
   legend-value = false
+
+# Hello!
   
 [group]
   [widget]
