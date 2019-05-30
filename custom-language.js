@@ -54,6 +54,12 @@ export default {
         action: "keyword.setting"
       },
       { regex: new RegExp(`[(@{|})]`), action: "placeholder" },
+      {
+        regex: new RegExp(
+          `/[+-]?\d{4}(-[01]\d(-[0-3]\d(T[0-2]\d:[0-5]\d:?([0-5]\d(\.\d+)?)?[+-][0-2]\d:[0-5]\dZ?)?)?)?/`
+        ),
+        action: "iso-date"
+      },
       { regex: new RegExp(`[+-]?([0-9]*[.])?[0-9]+`), action: "number" },
       { regex: new RegExp(`^[ \t]*#.*`), action: "comment" },
       { include: "@whitespace" }

@@ -17,7 +17,8 @@ monaco.editor.defineTheme("chartsTheme", {
   inherit: false,
   rules: [
     { token: "comment", foreground: "42830B" },
-    { token: "keyword.control", foreground: "68287A"},
+    { token: "iso-date", foreground: "68AA89" },
+    { token: "keyword.control", foreground: "68287A" },
     { token: "keyword.constants", foreground: "221199" },
     { token: "keyword.section", foreground: "221199" },
     { token: "keyword.setting", foreground: "b03060" },
@@ -31,136 +32,85 @@ monaco.editor.defineTheme("chartsTheme", {
 // Create editor
 monaco.editor.create(document.getElementById("container"), {
   theme: "chartsTheme",
-  value: `[configuration]
-  height-units = 4
-  width-units = 1
-  offset-right = 40
-  starttime = 1997
-  endtime = 2019
-  markers = false
+  value: `/*
+  The Trends service relies on Axibase Times Series Database for essential data storage and processing tasks.
+  The service uses the FRED® API by the Federal Reserve Bank of St. Louis. It is not endorsed or certified by the Bank.
+  By using this service, you are agreeing to comply with the FRED® API Terms of Use at https://research.stlouisfed.org/docs/api/terms_of_use.html.
+*/
+
+[configuration]
+  import fred = fred.js
+  start-time = 1970-01-01
+  end-time = 2018-01-01
   entity = fred.stlouisfed.org
-  legend-value = false
-  
-[group]
-  [widget]
-    title = Economic Policy Uncertainty Index (China)
-    metric = CHIEPUINDXM_
-    type = chart
-    label = CHIEPUINDXM    
-    
-    [series]
-      style = stroke-width: 2
-      color = black
-      alias = monthly_avg
-      
-    [series]
-      axis = left
-      statistic = wtavg
-      period = .25 year
-      mode = column
-      color = green
-      style = opacity: 0.5
-      alert-expression = value > value('monthly_avg')
-      alert-style = color: red
-      pointer-position = false
-      
-    [dropdown]
-      options = @{range(1997, 2019)}
-      change-field = starttime
-
-    [dropdown]
-      options = @{range(1997, 2019)}
-      change-field = endtime       
+  offset-left = 50
+  offset-right = 50
+  offset-top = 50
+  offset-bottom = 50
+  height-units = 1
+  width-units = 1
+  timezone = utc
 
 [group]
-  [widget]
-    title = Economic Policy Uncertainty Index (Russia)
-    metric = RUSEPUINDXM_
-    type = chart
-    label = RUSEPUINDXM
-    
-    [series]
-      style = stroke-width: 2
-      color = black
-      alias = monthly_avg
-      
-    [series]
-      axis = left
-      statistic = wtavg
-      period = .25 year
-      mode = column
-      color = green
-      style = opacity: 0.5
-      alert-expression = value > value('monthly_avg')
-      alert-style = color: red
-      pointer-position = false
-      
-    [dropdown]
-      options = @{range(1997, 2019)}
-      change-field = starttime
+  title = World Progress Explorer
 
-    [dropdown]
-      options = @{range(1997, 2019)}
-      change-field = endtime        
-      
-[group]
-  [widget]
-    title = Economic Policy Uncertainty Index (United States)
-    metric = USEPUINDXD_
-    starttime = 1997
-    endtime = 2019
-    type = chart
-    label = USEPUINDXD
-    
-    [series]
-      style = stroke-width: 2
-      color = black
-      alias = monthly_avg
-      
-    [series]
-      axis = left
-      statistic = wtavg
-      period = .25 year
-      mode = column 
-      color = green
-      style = opacity: 0.5
-      alert-expression = value > value('monthly_avg')
-      alert-style = color: red
-      pointer-position = false 
-      
-    [dropdown]
-      options = @{range(1997, 2019)}
-      change-field = starttime
+[widget]
+  type = chart
+ 
+  [series]
+    metric = population_total_by_country
+    alias = raw
+    display = false
 
-    [dropdown]
-      options = @{range(1997, 2019)}
-      change-field = endtime        
-      
-[group]
-  [widget]
-    title = Economic Policy Uncertainty Index (Europe)
-    entity = fred.stlouisfed.org
-    metric = EUEPUINDXM_
-    starttime = 1997
-    endtime = 2019
-    markers = false
-    type = chart
-    label = EUEPUINDXM
+    [tags]
+      country = D*
 
-    [series]
-      style = stroke-width: 2
-      color = black
-      alias = monthly_avg
+# Letters without data have been removed.
       
-    [series]
-      axis = left
-      statistic = wtavg
-      period = .25 year
-      mode = column
-      color = green
-      style = opacity: 0.5
-      alert-expression = value > value('monthly_avg')
-      alert-style = color: red
-      pointer-position = false`,
+list alphabetList = A*,
+      B*,
+      C*,
+      D*,
+      E*,
+      F*,
+      G*,
+      H*,
+      I*,
+      K*,
+      L*,
+      M*,
+      N*,
+      O*,
+      P*,
+      Q*,
+      R*,
+      S*,
+      T*,
+      U*,
+      V*,
+      W*,
+      Z*
+      endlist
+      
+list metricList = adolescent_fertility_rate_by_country,
+age_dependency_ratio_by_country,
+crude_birth_rate_by_country,
+fertility_rate_total_by_country,
+infant_mortality_rate_by_country,
+life_expectancy_at_birth_by_country,
+population_total_by_country      
+      endlist
+      
+  [dropdown]
+    options = @{alphabetList.escape()}
+    change-field = series.tags.country
+      
+  [dropdown]
+    options = @{metricList.escape()}
+    change-field = series.metric      
+      
+  [series]
+    label-format = tags.country
+    value = fred.Index('raw', '1990-01-01')`,
   language: "axibaseCharts"
 });
