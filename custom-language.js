@@ -1,52 +1,61 @@
-const sections = [
-  "column",
-  "configuration",
-  "dropdown",
-  "group",
-  "keys",
-  "link",
-  "node",
-  "option",
-  "other",
-  "placeholders",
-  "properties",
-  "property",
-  "series",
-  "tag",
-  "tags",
-  "threshold",
-  "widget"
-];
-
-const keywords = [
-  "script",
-  "endscript",
-  "import",
-  "csv",
-  "endcsv",
-  "endvar",
-  "for",
-  "endfor",
-  "list",
-  "endlist",
-  "if",
-  "endif"
-];
-
-const boolean = ["true", "false"];
-
 export default {
+  controls: [
+    "script",
+    "endscript",
+    "import",
+    "csv",
+    "endcsv",
+    "endvar",
+    "for",
+    "endfor",
+    "list",
+    "endlist",
+    "if",
+    "endif",
+    "in"
+  ],
+  sections: [
+    "column",
+    "configuration",
+    "dropdown",
+    "group",
+    "keys",
+    "link",
+    "node",
+    "option",
+    "other",
+    "placeholders",
+    "properties",
+    "property",
+    "series",
+    "tag",
+    "tags",
+    "threshold",
+    "widget"
+  ],
+  statistics: ["avg", "range", "value"],
+  constants: ["true", "false"],
   tokenizer: {
     root: [
-      [new RegExp(`'\.+\'`), "quoted-string"],
-      [new RegExp(`^[ \t]*\\w[-\\w\\s\\d_]+?(?=\\s*=)|column-.*`), "keyword"],
-      [new RegExp(`^[ \t]*[[${sections.join("|")}]+]`), "keyword"],
-      [new RegExp(`^[ \t]*(${keywords.join("|")})`), "keyword"],
-      [new RegExp(`[(@{|})]`), "placeholder"],
-      [new RegExp(`(${boolean.join("|")})`), "boolean"],
-      [/\d*\.*\d+([eE][\-+]?\d+)?/, "numeric"],
-      [new RegExp(`^[ \t]*#.*`), "comment"],
-
+      { regex: new RegExp(`(?:"([^"]*)"|'([^']*)')`), action: "string" },
+      [
+        /[a-z_$][\w$]*/,
+        {
+          cases: {
+            "@controls": "keyword.control",
+            "@constants": "keyword.constants",
+            "@sections": "keyword.section",
+            "@statistics": "keyword.statistics"
+          }
+        }
+      ],
+      {
+        regex: new RegExp(`^[ \t]*\\w[-\\w\\s\\d_]+?(?=\\s*=)|column-.*`),
+        action: "keyword.setting"
+      },
+      { regex: new RegExp(`[(@{|})]`), action: "placeholder" },
+      { regex: new RegExp(`[+-]?([0-9]*[.])?[0-9]+`), action: "number" },
+      { regex: new RegExp(`^[ \t]*#.*`), action: "comment" },
       { include: "@whitespace" }
     ],
 

@@ -16,29 +16,22 @@ monaco.editor.defineTheme("chartsTheme", {
   base: "vs",
   inherit: false,
   rules: [
-    { token: "boolean", foreground: "221199" },
-    { token: "keyword", foreground: "221199" },
-    { token: "numeric", foreground: "68AA89" },
-    { token: "placeholder", foreground: "9DC7E7" },
     { token: "comment", foreground: "42830B" },
-    { token: "quoted-string", foreground: "AA322B" },
-    { token: "value", foreground: "F3DB90" }
+    { token: "keyword.control", foreground: "68287A"},
+    { token: "keyword.constants", foreground: "221199" },
+    { token: "keyword.section", foreground: "221199" },
+    { token: "keyword.setting", foreground: "b03060" },
+    { token: "keyword.statistics", foreground: "EE8033" },
+    { token: "number", foreground: "68AA89" },
+    { token: "placeholder", foreground: "9DC7E7" },
+    { token: "string", foreground: "AA322B" }
   ]
 });
 
 // Create editor
 monaco.editor.create(document.getElementById("container"), {
   theme: "chartsTheme",
-  value: `/*
-  Controls at the top allow you to
-  recompute aggregate statistics on-the-fly,
-  without reloading the dataset.
-
-  To calculate aggregates on the server, set
-  server-aggregate = true 
-*/
-
-[configuration]
+  value: `[configuration]
   height-units = 4
   width-units = 1
   offset-right = 40
@@ -47,8 +40,6 @@ monaco.editor.create(document.getElementById("container"), {
   markers = false
   entity = fred.stlouisfed.org
   legend-value = false
-
-# Hello!
   
 [group]
   [widget]
@@ -170,7 +161,6 @@ monaco.editor.create(document.getElementById("container"), {
       style = opacity: 0.5
       alert-expression = value > value('monthly_avg')
       alert-style = color: red
-      pointer-position = false
-      hello`,
+      pointer-position = false`,
   language: "axibaseCharts"
 });
