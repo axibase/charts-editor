@@ -44,11 +44,11 @@ export default {
           cases: {
             "@controls": "keyword.control",
             "@constants": "keyword.constants",
-            "@sections": "keyword.section",
             "@statistics": "keyword.statistics"
           }
         }
       ],
+      { regex: new RegExp(`^[ \t]*\\[[a-z]+\\]`), action: "keyword.section" },
       {
         regex: new RegExp(`^[ \t]*\\w[-\\w\\s\\d_]+?(?=\\s*=)|column-.*`),
         action: "keyword.setting"
