@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <title>Monaco Charts</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      html,
-      body {
-        height: 100%;
-      }
-
-      #container {
-        min-height: 800px;
-      }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link type="text/css" rel="stylesheet" href="./dist/main.css" />
   </head>
   <body>
-    <div id="container"></div>
-    <script src="dist/main.bundle.js"></script>
+    <h2>Monaco Charts</h2>
+    <div
+      id="container"
+      style="width:800px;height:600px;border:1px solid grey"
+    ></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.js"></script>
+    <script>
+      require(["./dist/main"], function() {
+        var editor = monaco.editor.create(
+          document.getElementById("container"),
+          {
+            theme: "chartsTheme",
+            value: `[configuration]
+    entity = nurswgvml007
+    metric = cpu_busy
+    [group]
+    [widget]
+    type = chart
+    end-time = 2018-07-05 12:00:00
+    [series]
+    [widget]
+    type = chart
+    end-time = 2018-07-05 13:00:00
+    [series]`,
+            language: "axibaseCharts"
+          }
+        );
+      });
+    </script>
   </body>
 </html>
