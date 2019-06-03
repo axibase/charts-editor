@@ -1,7 +1,7 @@
 "use strict";
-import { LanguageServiceDefaultsImpl } from "./monaco.contribution";
-import { chartsWorker } from "./chartsWorker";
 import { editor, IDisposable, Uri } from "monaco-editor-core";
+import { chartsWorker } from "./chartsWorker";
+import { LanguageServiceDefaultsImpl } from "./monaco.contribution";
 
 const STOP_WHEN_IDLE_FOR = 2 * 60 * 1000; // 2 min
 
@@ -69,6 +69,7 @@ export class WorkerManager {
         // passed in to the create() method
         createData: {
           languageSettings: this._defaults.diagnosticsOptions,
+          // tslint:disable-next-line: object-literal-sort-keys
           languageId: this._defaults.languageId
         }
       });

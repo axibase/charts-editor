@@ -8,7 +8,6 @@ import Uri = monaco.Uri;
 import Position = monaco.Position;
 import Range = monaco.Range;
 import Thenable = monaco.Thenable;
-import CancellationToken = monaco.CancellationToken;
 
 export type WorkerAccessor = (
   first: Uri,
@@ -94,6 +93,7 @@ function toTextEdit(textEdit: ls.TextEdit): monaco.editor.ISingleEditOperation {
 
 export class CompletionAdapter
   implements monaco.languages.CompletionItemProvider {
+  // tslint:disable-next-line: variable-name
   constructor(private _worker: WorkerAccessor) {
     this._worker = _worker;
   }
@@ -104,9 +104,7 @@ export class CompletionAdapter
 
   public provideCompletionItems(
     model: monaco.editor.IReadOnlyModel,
-    position: Position,
-    context: monaco.languages.CompletionContext,
-    token: CancellationToken
+    position: Position
   ): Thenable<monaco.languages.CompletionList> {
     const resource = model.uri;
 
@@ -116,7 +114,7 @@ export class CompletionAdapter
       })
       .then(info => {
         if (!info) {
-          return;
+          return undefined;
         }
         const wordInfo = model.getWordUntilPosition(position);
         const wordRange = new Range(
@@ -129,6 +127,7 @@ export class CompletionAdapter
         let items: monaco.languages.CompletionItem[] = info.items.map(entry => {
           let item: monaco.languages.CompletionItem = {
             label: entry.label,
+            // tslint:disable-next-line: object-literal-sort-keys
             insertText: entry.insertText || entry.label,
             sortText: entry.sortText,
             filterText: entry.filterText,
