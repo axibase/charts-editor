@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+      "baseUrl": ".",
+      "paths": { "*": ["types/*"] },
     "noImplicitAny": true,
 		"noImplicitReturns": true,
 		"strict": true,

@@ -22,18 +22,25 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-              loader: MiniCssExtractPlugin.loader,
-              options: {
-                  publicPath: '../'
-              }
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '../'
+            }
           },
           'css-loader'
         ]
       },
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
-        exclude: /node_modules/
+        use: "ts-loader"
+      },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: "raw-loader"
+          }
+        ]
       }
     ]
   },
@@ -45,7 +52,7 @@ module.exports = {
       maxChunks: 1
     }),
     new MiniCssExtractPlugin({
-        filename: '[name].css'
+      filename: '[name].css'
     })
   ],
   resolve: {
