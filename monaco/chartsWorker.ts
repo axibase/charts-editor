@@ -1,9 +1,10 @@
 "use strict";
 
+import "axibase-server-web";
+import { CompletionProvider } from "axibase-server-web";
 import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
 import * as ls from "vscode-languageserver-types";
-import { CompletionProvider } from "../language_service/completionProvider";
 
 export class chartsWorker {
 
