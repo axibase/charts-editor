@@ -103,21 +103,10 @@ export class CompletionAdapter
             label: entry.label,
             insertText: entry.insertText || entry.label,
             sortText: entry.sortText,
-            filterText: entry.filterText,
-            documentation: entry.documentation,
             detail: entry.detail,
             range: wordRange,
             kind: toCompletionItemKind(entry.kind)
           };
-          if (entry.textEdit) {
-            item.range = toRange(entry.textEdit.range);
-            item.insertText = entry.textEdit.newText;
-          }
-          if (entry.additionalTextEdits) {
-            item.additionalTextEdits = entry.additionalTextEdits.map(
-              toTextEdit
-            );
-          }
           if (entry.insertTextFormat === ls.InsertTextFormat.Snippet) {
             item.insertTextRules =
               monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet;
