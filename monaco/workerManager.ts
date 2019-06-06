@@ -1,6 +1,6 @@
 "use strict";
 import { editor, IDisposable, Uri } from "monaco-editor-core";
-import { chartsWorker } from "./chartsWorker";
+import { ChartsWorker } from "./chartsWorker";
 import { LanguageServiceDefaultsImpl } from "./monaco.contribution";
 
 const STOP_WHEN_IDLE_FOR = 2 * 60 * 1000; // 2 min
@@ -10,8 +10,8 @@ export class WorkerManager {
   private _idleCheckInterval: number;
   private _lastUsedTime: number;
   private _configChangeListener: IDisposable;
-  private _worker: editor.MonacoWebWorker<chartsWorker>;
-  private _client: Promise<chartsWorker>;
+  private _worker: editor.MonacoWebWorker<ChartsWorker>;
+  private _client: Promise<ChartsWorker>;
 
   constructor(defaults: LanguageServiceDefaultsImpl) {
     this._defaults = defaults;
@@ -26,8 +26,8 @@ export class WorkerManager {
     );
   }
 
-  public getLanguageServiceWorker(...resources: Uri[]): Promise<chartsWorker> {
-    let _client: chartsWorker;
+  public getLanguageServiceWorker(...resources: Uri[]): Promise<ChartsWorker> {
+    let _client: ChartsWorker;
     return this._getClient()
       .then(client => {
         _client = client;
@@ -56,13 +56,13 @@ export class WorkerManager {
     }
   }
 
-  private _getClient(): Promise<chartsWorker> {
+  private _getClient(): Promise<ChartsWorker> {
     this._lastUsedTime = Date.now();
 
     if (!this._client) {
-      this._worker = editor.createWebWorker<chartsWorker>({
+      this._worker = editor.createWebWorker<ChartsWorker>({
         // module that exports the create() method and returns a `CSSWorker` instance
-        moduleId: "dist/chartsWorker",
+        moduleId: "dist/ChartsWorker",
 
         label: this._defaults.languageId,
 
@@ -74,7 +74,7 @@ export class WorkerManager {
         }
       });
 
-      this._client = (this._worker.getProxy() as any) as Promise<chartsWorker>;
+      this._client = (this._worker.getProxy() as any) as Promise<ChartsWorker>;
     }
 
     return this._client;

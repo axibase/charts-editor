@@ -6,7 +6,7 @@ import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
 import * as ls from "vscode-languageserver-types";
 
-export class chartsWorker {
+export class ChartsWorker {
 
   private _ctx: IWorkerContext;
   private _languageId: string;
@@ -51,6 +51,6 @@ export interface ICreateData {
 export function create(
   ctx: IWorkerContext,
   createData: ICreateData
-): chartsWorker {
-  return new chartsWorker(ctx, createData);
+): ChartsWorker {
+  return new ChartsWorker(ctx, createData);
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-import { chartsWorker } from "./chartsWorker";
+import { ChartsWorker } from "./chartsWorker";
 
 import * as monaco from "monaco-editor-core";
 import * as ls from "vscode-languageserver-types";
@@ -12,7 +12,7 @@ import Thenable = monaco.Thenable;
 export type WorkerAccessor = (
   first: Uri,
   ...more: Uri[]
-) => Promise<chartsWorker>;
+) => Promise<ChartsWorker>;
 
 // --- completion ------
 
