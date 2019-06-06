@@ -1,7 +1,7 @@
 "use strict";
 
-import "axibase-server-web";
-import { CompletionProvider } from "axibase-server-web";
+import "axibasecharts-syntax/server/axibase-server-web";
+import { CompletionProvider } from "axibasecharts-syntax/server/axibase-server-web";
 import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
 import * as ls from "vscode-languageserver-types";

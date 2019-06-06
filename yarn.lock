@@ -403,10 +403,9 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-axibase-server-web@../axibase-charts-vscode/server/axibase-server-web:
-  version "0.0.1"
-  dependencies:
-    typescript "^3.5.1"
+axibasecharts-syntax@axibase/axibase-charts-vscode#web-client:
+  version "1.0.21"
+  resolved "https://codeload.github.com/axibase/axibase-charts-vscode/tar.gz/b13797775e8d35cb50584c405dc7c29e5ab944b6"
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -3797,7 +3796,7 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@^3.4.5, typescript@^3.5.1:
+typescript@^3.4.5:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.1.tgz#ba72a6a600b2158139c5dd8850f700e231464202"
   integrity sha512-64HkdiRv1yYZsSe4xC1WVgamNigVYjlssIoaH2HcZF0+ijsk5YK2g0G34w9wJkze8+5ow4STd22AynfO6ZYYLw==
