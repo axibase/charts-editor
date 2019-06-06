@@ -1,5 +1,5 @@
 "use strict";
-
+// tslint:disable object-literal-sort-keys
 import { ChartsWorker } from "./chartsWorker";
 
 import * as monaco from "monaco-editor-core";
@@ -41,42 +41,16 @@ function toCompletionItemKind(
   let mItemKind = monaco.languages.CompletionItemKind;
 
   switch (kind) {
-    case ls.CompletionItemKind.Text:
-      return mItemKind.Text;
-    case ls.CompletionItemKind.Method:
-      return mItemKind.Method;
     case ls.CompletionItemKind.Function:
       return mItemKind.Function;
-    case ls.CompletionItemKind.Constructor:
-      return mItemKind.Constructor;
     case ls.CompletionItemKind.Field:
       return mItemKind.Field;
-    case ls.CompletionItemKind.Variable:
-      return mItemKind.Variable;
-    case ls.CompletionItemKind.Class:
-      return mItemKind.Class;
-    case ls.CompletionItemKind.Interface:
-      return mItemKind.Interface;
-    case ls.CompletionItemKind.Module:
-      return mItemKind.Module;
-    case ls.CompletionItemKind.Property:
-      return mItemKind.Property;
-    case ls.CompletionItemKind.Unit:
-      return mItemKind.Unit;
     case ls.CompletionItemKind.Value:
       return mItemKind.Value;
-    case ls.CompletionItemKind.Enum:
-      return mItemKind.Enum;
     case ls.CompletionItemKind.Keyword:
       return mItemKind.Keyword;
     case ls.CompletionItemKind.Snippet:
       return mItemKind.Snippet;
-    case ls.CompletionItemKind.Color:
-      return mItemKind.Color;
-    case ls.CompletionItemKind.File:
-      return mItemKind.File;
-    case ls.CompletionItemKind.Reference:
-      return mItemKind.Reference;
   }
   return mItemKind.Property;
 }
@@ -93,7 +67,7 @@ function toTextEdit(textEdit: ls.TextEdit): monaco.editor.ISingleEditOperation {
 
 export class CompletionAdapter
   implements monaco.languages.CompletionItemProvider {
-  // tslint:disable-next-line: variable-name
+
   constructor(private _worker: WorkerAccessor) {
     this._worker = _worker;
   }
@@ -114,7 +88,7 @@ export class CompletionAdapter
       })
       .then(info => {
         if (!info) {
-          return undefined;
+          return null;
         }
         const wordInfo = model.getWordUntilPosition(position);
         const wordRange = new Range(
@@ -127,7 +101,6 @@ export class CompletionAdapter
         let items: monaco.languages.CompletionItem[] = info.items.map(entry => {
           let item: monaco.languages.CompletionItem = {
             label: entry.label,
-            // tslint:disable-next-line: object-literal-sort-keys
             insertText: entry.insertText || entry.label,
             sortText: entry.sortText,
             filterText: entry.filterText,
