@@ -35,6 +35,10 @@ function toRange(range: ls.Range): Range {
   );
 }
 
+/**
+ * Determines kind of completion item by its code
+ * @param kind - completion item code
+ */
 function toCompletionItemKind(
   kind: number
 ): monaco.languages.CompletionItemKind {
@@ -53,16 +57,6 @@ function toCompletionItemKind(
       return mItemKind.Snippet;
   }
   return mItemKind.Property;
-}
-
-function toTextEdit(textEdit: ls.TextEdit): monaco.editor.ISingleEditOperation {
-  if (!textEdit) {
-    return void 0;
-  }
-  return {
-    range: toRange(textEdit.range),
-    text: textEdit.newText
-  };
 }
 
 export class CompletionAdapter

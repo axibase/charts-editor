@@ -4,22 +4,6 @@ import { rules, themeName } from "../syntax_highlight/theme";
 
 const languageID = "axibaseCharts";
 
-
-declare module monaco.languages.charts {
-  export interface DiagnosticsOptions {
-      readonly chartsCompletions?: string[];
-  }
-
-  export interface LanguageServiceDefaults {
-      readonly onDidChange: IEvent<LanguageServiceDefaults>;
-      readonly diagnosticsOptions: DiagnosticsOptions;
-
-      setDiagnosticsOptions(options: DiagnosticsOptions): void;
-  }
-
-  export const chartsDefaults: LanguageServiceDefaults;
-}
-
 export class LanguageServiceDefaultsImpl
   implements monaco.languages.charts.LanguageServiceDefaults {
   private _onDidChange = new Emitter<
@@ -76,7 +60,6 @@ monaco.languages.charts = createAPI();
 function getMode() {
   return import("./chartsMode");
 }
-
 
 editor.defineTheme(themeName, {
   base: "vs",
