@@ -11,14 +11,13 @@
 <body>
   <h2>Monaco Charts</h2>
   <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
-  <script src="./node_modules/requirejs/require.js"></script>
+  <script src="./dist/main.js"></script>
   <script>
-    require(["./dist/main"], function () {
-      var editor = monaco.editor.create(
-        document.getElementById("container"),
-        {
-          theme: "chartsTheme",
-          value: `/*
+    monaco.editor.create(
+      document.getElementById("container"),
+      {
+        theme: "chartsTheme",
+        value: `/*
   The Trends service relies on Axibase Times Series Database for essential data storage and processing tasks.
   The service uses the FRED® API by the Federal Reserve Bank of St. Louis. It is not endorsed or certified by the Bank.
   By using this service, you are agreeing to comply with the FRED® API Terms of Use at https://research.stlouisfed.org/docs/api/terms_of_use.html.
@@ -154,10 +153,9 @@
       alert-expression = value > value('monthly_avg')
       alert-style = color: red
       pointer-position = false`,
-          language: "axibaseCharts"
-        }
-      );
-    });
+        language: "axibaseCharts"
+      }
+    );
   </script>
 </body>
 
