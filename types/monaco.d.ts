@@ -5,6 +5,18 @@ declare namespace monaco.languages.charts {
     readonly chartsCompletions?: string[];
   }
 
+  export interface ChartsCompletionItem {
+    create(
+      label: string,
+      insertText: string,
+      range: IRange,
+      kind: CompletionItemKind,
+      sortText?: string,
+      detail?: string,
+      insertTextRules?: CompletionItemInsertTextRule
+    ): CompletionItem;
+  }
+
   export interface LanguageServiceDefaults {
     readonly onDidChange: IEvent<LanguageServiceDefaults>;
     readonly diagnosticsOptions: DiagnosticsOptions;

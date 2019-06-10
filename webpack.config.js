@@ -1,4 +1,3 @@
-const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require("path");
 const webpack = require("webpack");
@@ -45,9 +44,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new MonacoWebpackPlugin({
-      languages: []
-    }),
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),

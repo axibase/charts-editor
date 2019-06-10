@@ -1,6 +1,5 @@
 "use strict";
 
-import "axibasecharts-syntax/server/axibase-server-web";
 import { CompletionProvider } from "axibasecharts-syntax/server/axibase-server-web";
 import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
