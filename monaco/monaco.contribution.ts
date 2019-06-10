@@ -1,4 +1,4 @@
-import { editor, Emitter, IEvent, languages } from "monaco-editor-core";
+import { editor, Emitter, IEvent, IRange, languages } from "monaco-editor-core";
 import { syntax } from "../syntax_highlight/regexes";
 import { rules, themeName } from "../syntax_highlight/theme";
 

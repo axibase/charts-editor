@@ -1,7 +1,8 @@
-import { languages, Uri } from "monaco-editor-core";
+import { Uri } from "monaco-editor-core";
 import { ChartsWorker } from "./chartsWorker";
 import * as languageFeatures from "./languageFeatures";
 import { LanguageServiceDefaultsImpl } from "./monaco.contribution";
+import { DiagnosticsAdapter } from "./validator";
 import { WorkerManager } from "./workerManager";
 
 export function setupMode(defaults: LanguageServiceDefaultsImpl): void {
@@ -13,8 +14,11 @@ export function setupMode(defaults: LanguageServiceDefaultsImpl): void {
     return client.getLanguageServiceWorker(...uris);
   };
 
-  languages.registerCompletionItemProvider(
+  monaco.languages.registerCompletionItemProvider(
     defaults.languageId,
     new languageFeatures.CompletionAdapter(worker)
   );
+
+  // tslint:disable-next-line: no-unused-expression
+  new DiagnosticsAdapter(defaults.languageId, worker, defaults);
 }
