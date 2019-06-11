@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "types/*"
+      ]
+    },
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "strictNullChecks": false,
+    "outDir": "./dist/",
+    "moduleResolution": "node",
+    "module": "amd",
+    "target": "es5",
+    "downlevelIteration": true,
+    "allowJs": true,
+  }
+}

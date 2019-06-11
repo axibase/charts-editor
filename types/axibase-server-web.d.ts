@@ -1,0 +1,1 @@
+declare module 'axibasecharts-syntax/server/axibase-server-web';
