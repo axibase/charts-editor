@@ -1,5 +1,5 @@
 {
-  "name": "charts-web",
+  "name": "charts-editor",
   "version": "0.0.1",
   "main": "index.js",
   "dependencies": {
@@ -9,16 +9,13 @@
     "build": "webpack --mode=development",
     "serve": "webpack-dev-server"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PolinaShneider/charts-web.git"
-  },
+  "repository": "https://github.com/axibase/charts-editor",
   "author": "Axibase Developers",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/PolinaShneider/charts-web/issues"
+    "url": "https://github.com/axibase/charts-editor/issues"
   },
-  "homepage": "https://github.com/PolinaShneider/charts-web#readme",
+  "homepage": "https://github.com/axibase/charts-editor#readme",
   "devDependencies": {
     "axibasecharts-syntax": "axibase/axibase-charts-vscode#web-client",
     "browser-or-node": "^1.2.1",

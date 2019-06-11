@@ -1,6 +1,5 @@
 "use strict";
-
-import { Server } from "axibasecharts-syntax/server/axibase-server-web";
+import { Server } from "axibasecharts-syntax/charts-language-service";
 import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
 import * as ls from "vscode-languageserver-types";
