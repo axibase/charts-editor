@@ -1,4 +1,4 @@
-# charts-web
+# charts-editor
 
 ## Quick start
 
