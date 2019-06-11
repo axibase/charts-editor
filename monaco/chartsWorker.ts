@@ -1,7 +1,6 @@
 "use strict";
 
-import { CompletionProvider } from "axibasecharts-syntax/server/axibase-server-web/dist/server/src/completionProvider";
-import { Validator } from "axibasecharts-syntax/server/axibase-server-web/dist/server/src/validator";
+import { Server } from "axibasecharts-syntax/server/axibase-server-web";
 import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
 import * as ls from "vscode-languageserver-types";
@@ -21,7 +20,7 @@ export class ChartsWorker {
     position: ls.Position
   ): Thenable<ls.CompletionList> {
     let document = this._getTextDocument(uri);
-    let completions = new CompletionProvider(
+    let completions = new Server.CompletionProvider(
       document,
       position
     ).getCompletionItems();
@@ -31,7 +30,7 @@ export class ChartsWorker {
   public doValidation(uri: string): Thenable<ls.Diagnostic[]> {
     let document = this._getTextDocument(uri);
     if (document) {
-      let diagnostics = new Validator(document.getText()).lineByLine();
+      let diagnostics = new Server.Validator(document.getText()).lineByLine();
       return Promise.resolve(diagnostics);
     }
     return Promise.resolve([]);
