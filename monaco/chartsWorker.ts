@@ -1,5 +1,5 @@
 "use strict";
-import * as LanguageService from "axibasecharts-syntax/charts-language-service";
+import * as LanguageService from "axibasecharts-syntax/language-service";
 import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
 import * as ls from "vscode-languageserver-types";
@@ -19,19 +19,20 @@ export class ChartsWorker {
     position: ls.Position
   ): Thenable<ls.CompletionList> {
     let document = this._getTextDocument(uri);
-    let completions = new LanguageService._CompletionProvider(
+    let completions = new LanguageService.CompletionProvider(
       document,
-      position
+      position,
+      new LanguageService.ResourcesProviderWeb().settingsMap
     ).getCompletionItems();
     return Promise.resolve(ls.CompletionList.create(completions));
   }
 
   public doValidation(uri: string): Thenable<ls.Diagnostic[]> {
     let document = this._getTextDocument(uri);
-    if (document) {
-      let diagnostics = new LanguageService._Validator(document.getText()).lineByLine();
-      return Promise.resolve(diagnostics);
-    }
+    // if (document) {
+    //   let diagnostics = new LanguageService.Validator(document.getText()).lineByLine();
+    //   return Promise.resolve(diagnostics);
+    // }
     return Promise.resolve([]);
   }
 

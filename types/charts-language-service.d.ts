@@ -1,1 +1,0 @@
-declare module 'axibasecharts-syntax/charts-language-service';
