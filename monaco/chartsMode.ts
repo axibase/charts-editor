@@ -2,7 +2,7 @@ import { Uri } from "monaco-editor-core";
 import { ChartsWorker } from "./chartsWorker";
 import * as languageFeatures from "./languageFeatures";
 import { LanguageServiceDefaultsImpl } from "./monaco.contribution";
-import { DiagnosticsAdapter } from "./validator";
+// import { DiagnosticsAdapter } from "./validator";
 import { WorkerManager } from "./workerManager";
 
 export function setupMode(defaults: LanguageServiceDefaultsImpl): void {
@@ -20,5 +20,5 @@ export function setupMode(defaults: LanguageServiceDefaultsImpl): void {
   );
 
   // tslint:disable-next-line: no-unused-expression
-  new DiagnosticsAdapter(defaults.languageId, worker, defaults);
+  // new DiagnosticsAdapter(defaults.languageId, worker, defaults);
 }
