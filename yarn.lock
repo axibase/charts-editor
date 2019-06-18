@@ -377,7 +377,7 @@ atob@^2.1.1:
 
 axibasecharts-syntax@axibase/axibase-charts-vscode#web-client:
   version "1.0.21"
-  resolved "https://codeload.github.com/axibase/axibase-charts-vscode/tar.gz/06fe6f7d8681a83047b935fff401c33a5ffcfae1"
+  resolved "https://codeload.github.com/axibase/axibase-charts-vscode/tar.gz/5bc3eec5377f4116f1f212ff5d826b8da71be621"
 
 balanced-match@^1.0.0:
   version "1.0.0"
