@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/axibase/charts-editor#readme",
   "devDependencies": {
-    "axibasecharts-syntax": "axibase/axibase-charts-vscode#web-client",
+    "axibasecharts-syntax": "../axibase-charts-vscode/language-service",
     "css-loader": "^2.1.1",
     "mini-css-extract-plugin": "^0.7.0",
     "monaco-editor-core": "^0.16.0",

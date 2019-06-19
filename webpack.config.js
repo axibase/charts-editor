@@ -52,7 +52,10 @@ module.exports = {
     })
   ],
   resolve: {
-    extensions: [".tsx", ".ts", ".js"]
+    extensions: [".ts", ".js"],
+    alias: {
+      'axibasecharts-syntax': path.resolve(__dirname, 'node_modules/axibasecharts-syntax/dist/amd/axibase-charts-languageservice.js')
+    }
   },
   optimization: {
     noEmitOnErrors: true,

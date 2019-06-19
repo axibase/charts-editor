@@ -14,8 +14,7 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "module": "amd",
-    "target": "es6",
-    "downlevelIteration": true,
-    "allowJs": true,
+    "target": "es5",
+    "allowJs": true
   }
 }
