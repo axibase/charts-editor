@@ -9,12 +9,12 @@ export class ChartsWorker {
 
   private _ctx: IWorkerContext;
   private _languageId: string;
-  private languageService: LanguageService<ResourcesProvider>;
+  private languageService: LanguageService;
 
   constructor(ctx: IWorkerContext, createData: ICreateData) {
     this._ctx = ctx;
     this._languageId = createData.languageId;
-    this.languageService = new LanguageService<ResourcesProvider>(new ResourcesProvider());
+    this.languageService = new LanguageService(new ResourcesProvider());
   }
 
   public doComplete(
