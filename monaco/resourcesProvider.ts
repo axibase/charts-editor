@@ -1,4 +1,4 @@
-import { ResourcesProviderBase, Setting } from "axibasecharts-syntax";
+import { ResourcesProviderBase, Setting } from "charts-language-service";
 
 interface IDictionary { $schema: string; settings: Setting[]; }
 
