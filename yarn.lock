@@ -2,6 +2,22 @@
 # yarn lockfile v1
 
 
+"@axibase/charts-language-service@axibase/charts-language-service":
+  version "0.0.1"
+  resolved "https://codeload.github.com/axibase/charts-language-service/tar.gz/cd5dcaaa4dc24567629c7a08c3d06a3628ae7b67"
+  dependencies:
+    rimraf "^2.6.3"
+    rollup "^1.15.6"
+    rollup-plugin-json "^4.0.0"
+    rollup-plugin-node-resolve "^5.0.3"
+    rollup-plugin-terser "^5.0.0"
+    rollup-plugin-typescript "^1.0.1"
+    terser "^4.0.0"
+    ts-loader "^6.0.2"
+    tslib "^1.10.0"
+    typescript "^3.5.2"
+    vscode-languageserver-types "^3.14.0"
+
 "@babel/code-frame@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.0.0.tgz#06e2ab19bdb535385559aabb5ba59729482800f8"
@@ -655,21 +671,6 @@ chalk@^2.0.0, chalk@^2.3.0, chalk@^2.4.1, chalk@^2.4.2:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
-
-charts-language-service@../charts-language-service:
-  version "0.0.1"
-  dependencies:
-    rimraf "^2.6.3"
-    rollup "^1.15.6"
-    rollup-plugin-json "^4.0.0"
-    rollup-plugin-node-resolve "^5.0.3"
-    rollup-plugin-terser "^5.0.0"
-    rollup-plugin-typescript "^1.0.1"
-    terser "^4.0.0"
-    ts-loader "^6.0.2"
-    tslib "^1.10.0"
-    typescript "^3.5.2"
-    vscode-languageserver-types "^3.14.0"
 
 chokidar@^2.0.2, chokidar@^2.1.6:
   version "2.1.6"
