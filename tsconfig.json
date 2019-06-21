@@ -15,6 +15,7 @@
     "moduleResolution": "node",
     "module": "amd",
     "target": "es5",
-    "allowJs": true
+    "allowJs": true,
+    "downlevelIteration": true
   }
 }

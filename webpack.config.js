@@ -54,7 +54,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      'charts-language-service': path.resolve(__dirname, 'node_modules/charts-language-service/dist/amd/charts-language-service.js')
+      'charts-language-service': path.resolve(__dirname, 'node_modules/charts-language-service/dist/amd/build.js')
     }
   },
   optimization: {

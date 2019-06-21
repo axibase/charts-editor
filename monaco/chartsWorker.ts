@@ -14,7 +14,7 @@ export class ChartsWorker {
   constructor(ctx: IWorkerContext, createData: ICreateData) {
     this._ctx = ctx;
     this._languageId = createData.languageId;
-    this._languageService = new LanguageService(new ResourcesProvider());
+    LanguageService.initialize(new ResourcesProvider());
   }
 
   public doComplete(
@@ -23,7 +23,7 @@ export class ChartsWorker {
   ): Thenable<ls.CompletionList> {
     let document = this._getTextDocument(uri);
 
-    let completions = this._languageService.getCompletionProvider(
+    let completions = LanguageService.getCompletionProvider(
       document, position
     ).getCompletionItems();
 
@@ -32,10 +32,10 @@ export class ChartsWorker {
 
   public doValidation(uri: string): Thenable<ls.Diagnostic[]> {
     let document = this._getTextDocument(uri);
-    // if (document) {
-    //   let diagnostics = this.languageService.getValidator(document.getText()).lineByLine();
-    //   return Promise.resolve(diagnostics);
-    // }
+    if (document) {
+      let diagnostics = LanguageService.getValidator(document.getText()).lineByLine();
+      return Promise.resolve(diagnostics);
+    }
     return Promise.resolve([]);
   }
 
