@@ -6,6 +6,14 @@ export class ResourcesProvider extends ResourcesProviderBase {
     constructor() {
         super();
     }
+
+    /**
+     * Reads snippets from "snippets.json" file
+     * @returns snippets JSON contents
+     */
+    public readSnippets(): string {
+        return require("../snippets/snippets.json");
+    }
     /**
      * Reads dictionary from "dictionary.json" file
      * @returns array of settings from the file

@@ -1,5 +1,4 @@
 import "../monaco/monaco.contribution";
-import "./main.css";
 
 self.MonacoEnvironment = {
   getWorker: function () {

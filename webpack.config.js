@@ -1,4 +1,4 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const webpack = require("webpack");
 
@@ -20,12 +20,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '../'
-            }
-          },
           'css-loader'
         ]
       },
@@ -47,9 +41,9 @@ module.exports = {
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css'
-    })
+    new CopyPlugin([
+      { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
+    ]),
   ],
   resolve: {
     extensions: [".ts", ".js"],
