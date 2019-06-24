@@ -5,7 +5,7 @@ const webpack = require("webpack");
 module.exports = {
   target: "node",
   entry: {
-    main: "./src/main.js",
+    main: "./monaco/monaco.contribution.ts",
     "charts.worker": "./monaco/charts.worker.ts"
   },
   output: {
