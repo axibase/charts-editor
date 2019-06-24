@@ -5,8 +5,8 @@ const webpack = require("webpack");
 module.exports = {
   target: "node",
   entry: {
-    main: "./monaco/monaco.contribution.ts",
-    "charts.worker": "./monaco/charts.worker.ts"
+    main: "./src/monaco.contribution.ts",
+    "charts.worker": "./src/charts.worker.ts"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
