@@ -1,12 +1,12 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
   target: "node",
   entry: {
-    main: "./src/main.js",
-    "charts.worker": "./monaco/charts.worker.ts"
+    main: "./src/monaco.contribution.ts",
+    "charts.worker": "./src/charts.worker.ts"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -20,12 +20,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '../'
-            }
-          },
           'css-loader'
         ]
       },
@@ -47,12 +41,15 @@ module.exports = {
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),
-    new MiniCssExtractPlugin({
-      filename: '[name].css'
-    })
+    new CopyPlugin([
+      { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
+    ]),
   ],
   resolve: {
-    extensions: [".tsx", ".ts", ".js"]
+    extensions: [".ts", ".js"],
+    alias: {
+      '@axibase/charts-language-service': path.resolve(__dirname, 'node_modules/@axibase/charts-language-service/dist/amd/build.js')
+    }
   },
   optimization: {
     noEmitOnErrors: true,
