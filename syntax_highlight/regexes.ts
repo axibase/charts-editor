@@ -1,5 +1,27 @@
 // tslint:disable object-literal-sort-keys
 // tslint:disable max-line-length
+export const language_configuration = {
+  brackets: [
+    ["{", "}"],
+    ["[", "]"],
+    ["(", ")"]
+  ],
+  autoClosingPairs: [
+    { open: "[", close: "]" },
+    { open: "{", close: "}" },
+    { open: "(", close: ")" },
+    { open: "'", close: "'", notIn: ["string", "comment"] },
+    { open: '"', close: '"', notIn: ["string"] },
+  ],
+  surroundingPairs: [
+    { open: "{", close: "}" },
+    { open: "[", close: "]" },
+    { open: "(", close: ")" },
+    { open: '"', close: '"' },
+    { open: "'", close: "'" },
+  ],
+};
+
 export const syntax = {
   MonarchTokensProvider: {
     controls: [

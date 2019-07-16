@@ -1,5 +1,5 @@
 import { editor, Emitter, IEvent, IRange, languages } from "monaco-editor-core";
-import { syntax } from "../syntax_highlight/regexes";
+import { language_configuration, syntax } from "../syntax_highlight/regexes";
 import { rules, themeName } from "../syntax_highlight/theme";
 
 const languageID = "axibaseCharts";
@@ -79,3 +79,5 @@ languages.onLanguage(languageID, () => {
 languages.register({
   id: languageID
 });
+
+languages.setLanguageConfiguration(languageID, language_configuration as any);
