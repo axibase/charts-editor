@@ -4,20 +4,9 @@
   "main": "index.js",
   "dependencies": {
     "@axibase/charts-language-service": "axibase/charts-language-service",
-    "monaco-editor": "^0.17.0",
-    "typescript": "^3.4.5",
-    "vscode-languageserver-types": "^3.14.0",
-    "webpack": "^4.32.2",
-    "webpack-cli": "^3.3.2",
-    "raw-loader": "^2.0.0",
-    "ts-loader": "^6.0.1",
-    "copy-webpack-plugin": "^5.0.3",
-    "css-loader": "^2.1.1",
-    "monaco-editor-core": "^0.16.0"
+    "monaco-editor": "^0.17.0"
   },
   "scripts": {
-    "preinstall": "npm install",
-    "postinstall": "npm run build",
     "build": "webpack --mode=production",
     "serve": "webpack-dev-server"
   },
@@ -29,7 +18,16 @@
   },
   "homepage": "https://github.com/axibase/charts-editor#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.3",
+    "css-loader": "^2.1.1",
+    "monaco-editor-core": "^0.16.0",
+    "raw-loader": "^2.0.0",
+    "ts-loader": "^6.0.1",
     "tslint": "^5.17.0",
+    "typescript": "^3.4.5",
+    "vscode-languageserver-types": "^3.14.0",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
     "webpack-dev-server": "^3.4.1"
   }
 }

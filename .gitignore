@@ -13,6 +13,3 @@ node_modules/
 
 # MacOS
 .DS_Store
-
-# Built files
-dist/*
