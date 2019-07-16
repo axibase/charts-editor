@@ -818,6 +818,12 @@
             "section": "widget"
         },
         {
+            "displayName": "columns",
+            "type": "string",
+            "example": "columns = pid, command",
+            "section": "widget"
+        },
+        {
             "displayName": "column-time",
             "type": "string",
             "example": "Time in seconds",
@@ -2160,11 +2166,16 @@
         },
         {
             "displayName": "fill-value",
-            "type": "boolean",
-            "example": false,
-            "defaultValue": true,
+            "type": "enum",
+            "example": "NONE",
+            "defaultValue": "LINEAR",
             "section": "series",
-            "widget": "chart"
+            "widget": "chart",
+            "enum": [
+                "NONE",
+                "LINEAR",
+                "PREVIOUS"
+            ]
         },
         {
             "displayName": "filter",
@@ -3989,6 +4000,12 @@
             "section": "series"
         },
         {
+            "displayName": "max-insert-time",
+            "type": "date",
+            "example": "previous_hour",
+            "section": "widget"
+        },
+        {
             "displayName": "max-range",
             "type": "number",
             "example": 40,
@@ -4048,17 +4065,17 @@
             "example": "mount_point"
         },
         {
-            "displayName": "method-path",
-            "section": "configuration",
-            "type": "enum",
-            "example": "/messages/query",
-            "defaultValue": "/series/query",
-            "enum": [
-                "/alerts/query",
-                "/series/query",
-                "/messages/query",
-                "/properties/query"
-            ]
+            "displayName": "merge-properties",
+            "section": "widget",
+            "type": "boolean",
+            "defaultValue": "false",
+            "example": "true"
+        },
+        {
+            "displayName": "message-expression",
+            "section": "widget",
+            "type": "string",
+            "example": "message LIKE 'Starting*'"
         },
         {
             "displayName": "metric",
@@ -4095,6 +4112,12 @@
             "defaultValue": 0,
             "type": "number",
             "example": 42
+        },
+        {
+            "displayName": "min-insert-time",
+            "section": "widget",
+            "type": "date",
+            "example": "current_hour"
         },
         {
             "displayName": "minor-ticks",
@@ -7187,6 +7210,7 @@
             "section": "series",
             "enum": [
                 "count",
+                "detail",
                 "min",
                 "max",
                 "sum",
@@ -7745,13 +7769,19 @@
             "section": "widget",
             "type": "interval",
             "defaultValue": "1 hour",
+            "override": {
+                "[widget == 'console']": {
+                    "defaultValue": "all"
+                }
+            },
             "example": "5 minute"
         },
         {
             "displayName": "time-zone",
             "type": "string",
             "section": "widget",
-            "example": "UTC"
+            "example": "UTC",
+            "default": "local"
         },
         {
             "displayName": "title",
@@ -8242,9 +8272,11 @@
                 "[section == 'property' || section == 'properties']": {
                     "enum": [
                         ".*"
-                    ]
+                    ],
+                    "section": "property"
                 }
-            }
+            },
+            "section": "widget"
         },
         {
             "displayName": "unscale",

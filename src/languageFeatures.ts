@@ -54,7 +54,7 @@ export class CompletionAdapter
   }
 
   public get triggerCharacters(): string[] {
-    return [" "];
+    return [" ", "["];
   }
 
   public async provideCompletionItems(

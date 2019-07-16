@@ -20,9 +20,9 @@ export class ChartsWorker {
     uri: string,
     position: ls.Position
   ): Thenable<ls.CompletionList> {
-    let document = this._getTextDocument(uri);
+    const document = this._getTextDocument(uri);
 
-    let completions = LanguageService.getCompletionProvider(
+    const completions = LanguageService.getCompletionProvider(
       document, position
     ).getCompletionItems();
 
@@ -30,10 +30,19 @@ export class ChartsWorker {
   }
 
   public doValidation(uri: string): Thenable<ls.Diagnostic[]> {
-    let document = this._getTextDocument(uri);
+    const document = this._getTextDocument(uri);
     if (document) {
-      let diagnostics = LanguageService.getValidator(document.getText()).lineByLine();
+      const diagnostics = LanguageService.getValidator(document.getText()).lineByLine();
       return Promise.resolve(diagnostics);
+    }
+    return Promise.resolve([]);
+  }
+
+  public doFormat(uri: string): Thenable<ls.TextEdit[]> {
+    const document = this._getTextDocument(uri);
+    if (document) {
+      const edits = LanguageService.getFormatter(document.getText(), ls.FormattingOptions.create(2, true)).lineByLine();
+      return Promise.resolve(edits);
     }
     return Promise.resolve([]);
   }
