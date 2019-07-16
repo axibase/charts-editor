@@ -55,11 +55,6 @@ module.exports = {
     noEmitOnErrors: true,
     splitChunks: false
   },
-  devServer: {
-    contentBase: path.join(__dirname, "./"),
-    open: true,
-    compress: true
-  },
   stats: {
     all: false,
     builtAt: true,

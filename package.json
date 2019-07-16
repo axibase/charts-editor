@@ -7,8 +7,7 @@
     "monaco-editor": "^0.17.0"
   },
   "scripts": {
-    "build": "webpack --mode=production",
-    "serve": "webpack-dev-server"
+    "build": "webpack --mode=production"
   },
   "repository": "https://github.com/axibase/charts-editor",
   "author": "Axibase Developers",
