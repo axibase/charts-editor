@@ -16,6 +16,7 @@
     "monaco-editor-core": "^0.16.0"
   },
   "scripts": {
+    "preinstall": "npm install",
     "postinstall": "npm run build",
     "build": "webpack --mode=production",
     "serve": "webpack-dev-server"
