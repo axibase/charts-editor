@@ -14,16 +14,19 @@ export class DocumentFormatter implements monaco.languages.DocumentFormattingEdi
         options: monaco.languages.FormattingOptions,
         token: monaco.CancellationToken
     ): monaco.languages.ProviderResult<monaco.languages.TextEdit[]> {
-        return this.getEdits(model);
+        return this.getEdits(model, options);
     }
 
     /**
      * Get document's edits via logic encapsulated in worker
      */
-    public async getEdits(model: monaco.editor.ITextModel): Promise<monaco.languages.TextEdit[]> {
+    public async getEdits(
+        model: monaco.editor.ITextModel,
+        options: monaco.languages.FormattingOptions
+    ): Promise<monaco.languages.TextEdit[]> {
         const resource = model.uri;
         const worker = await this._worker(resource);
-        const edits = await worker.doFormat(resource.toString());
+        const edits = await worker.doFormat(resource.toString(), options);
 
         return this.prepareEdits(edits);
     }

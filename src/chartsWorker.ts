@@ -38,10 +38,13 @@ export class ChartsWorker {
     return Promise.resolve([]);
   }
 
-  public doFormat(uri: string): Thenable<ls.TextEdit[]> {
+  public doFormat(uri: string, options: monaco.languages.FormattingOptions): Thenable<ls.TextEdit[]> {
     const document = this._getTextDocument(uri);
     if (document) {
-      const edits = LanguageService.getFormatter(document.getText(), ls.FormattingOptions.create(2, true)).lineByLine();
+      const edits = LanguageService.getFormatter(
+        document.getText(),
+        ls.FormattingOptions.create(options.tabSize, options.insertSpaces)
+      ).lineByLine();
       return Promise.resolve(edits);
     }
     return Promise.resolve([]);

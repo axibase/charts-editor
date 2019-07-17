@@ -30,6 +30,7 @@ export const syntax = {
       "import",
       "csv",
       "endcsv",
+      "var",
       "endvar",
       "for",
       "endfor",
