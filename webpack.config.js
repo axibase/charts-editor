@@ -6,7 +6,8 @@ module.exports = {
   target: "node",
   entry: {
     main: "./src/monaco.contribution.ts",
-    "charts.worker": "./src/charts.worker.ts"
+    "charts.worker": "./src/charts.worker.ts",
+    "editor.worker": "monaco-editor/esm/vs/editor/editor.worker.js"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
