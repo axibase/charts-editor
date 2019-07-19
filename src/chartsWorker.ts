@@ -38,6 +38,15 @@ export class ChartsWorker {
     return Promise.resolve([]);
   }
 
+  public doHover(uri: string, position: ls.Position): Thenable<ls.Hover> {
+    const document = this._getTextDocument(uri);
+    if (document) {
+      const hoverItems = LanguageService.getHoverProvider(document).provideHover(position);
+      return Promise.resolve(hoverItems);
+    }
+    return Promise.resolve(null);
+  }
+
   public doFormat(uri: string, options: monaco.languages.FormattingOptions): Thenable<ls.TextEdit[]> {
     const document = this._getTextDocument(uri);
     if (document) {

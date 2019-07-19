@@ -1,6 +1,7 @@
 import { Uri } from "monaco-editor-core";
 import { ChartsWorker } from "./chartsWorker";
 import { DocumentFormatter } from "./formatter";
+import { HoverProvider } from "./hoverProvider";
 import * as languageFeatures from "./languageFeatures";
 import { LanguageServiceDefaultsImpl } from "./monaco.contribution";
 import { DiagnosticsAdapter } from "./validator";
@@ -24,6 +25,12 @@ export function setupMode(defaults: LanguageServiceDefaultsImpl): void {
   monaco.languages.registerDocumentFormattingEditProvider(
     defaults.languageId,
     new DocumentFormatter(worker)
+  );
+
+  // Document Hover
+  monaco.languages.registerHoverProvider(
+    defaults.languageId,
+    new HoverProvider(worker)
   );
 
   // Validator
