@@ -7,7 +7,11 @@
     "monaco-editor": "^0.17.0"
   },
   "scripts": {
-    "build": "webpack --mode=production"
+    "build": "npm update @axibase/charts-language-service && webpack --mode=production",
+    "clean": "rimraf dist monaco-editor-core",
+    "copy": "mkdir monaco-editor-core && ncp ./node_modules/monaco-editor-core ./monaco-editor-core",
+    "change-files": "ncp monaco-patch/mouseHandler.js monaco-editor-core/esm/vs/editor/browser/controller/mouseHandler.js && ncp  monaco-patch/scrollableElement.js monaco-editor-core/esm/vs/base/browser/ui/scrollbar/scrollableElement.js",
+    "patch-monaco": "npm i && npm run clean && npm run copy && npm run change-files"
   },
   "repository": "https://github.com/axibase/charts-editor",
   "author": "Axibase Developers",
@@ -20,7 +24,9 @@
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^2.1.1",
     "monaco-editor-core": "^0.16.0",
+    "ncp": "^2.0.0",
     "raw-loader": "^2.0.0",
+    "rimraf": "^2.6.3",
     "ts-loader": "^6.0.1",
     "tslint": "^5.17.0",
     "typescript": "^3.4.5",
