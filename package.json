@@ -8,7 +8,7 @@
   },
   "scripts": {
     "serve": "http-server",
-    "build": "npm update @axibase/charts-language-service && webpack --mode=production",
+    "build": "webpack --mode=production",
     "clean": "rimraf dist monaco-editor-core",
     "copy": "mkdir monaco-editor-core && ncp ./node_modules/monaco-editor-core ./monaco-editor-core",
     "change-files": "ncp monaco-patch/mouseHandler.js monaco-editor-core/esm/vs/editor/browser/controller/mouseHandler.js && ncp  monaco-patch/scrollableElement.js monaco-editor-core/esm/vs/base/browser/ui/scrollbar/scrollableElement.js",
