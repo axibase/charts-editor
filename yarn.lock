@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@axibase/charts-language-service@axibase/charts-language-service#develop":
+"@axibase/charts-language-service@axibase/charts-language-service":
   version "0.0.1"
-  resolved "https://codeload.github.com/axibase/charts-language-service/tar.gz/086d4d0155ea503b66117d42bfdcd901e4b187a9"
+  resolved "https://codeload.github.com/axibase/charts-language-service/tar.gz/8ece1b67edf2b98002ba82b7fb071f50a2eb871c"
   dependencies:
     escodegen "^1.11.1"
     esprima "^4.0.1"
