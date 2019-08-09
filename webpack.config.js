@@ -48,8 +48,7 @@ module.exports = {
   ],
   resolve: {
     extensions: [".ts", ".js"],
-    alias: {
-      '@axibase/charts-language-service': path.resolve(__dirname, 'node_modules/@axibase/charts-language-service/dist/amd/build.js'),
+    alias: {      
       'monaco-editor-core': path.resolve(__dirname, 'monaco-editor-core')
     }
   },
