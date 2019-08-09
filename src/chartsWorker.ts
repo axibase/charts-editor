@@ -1,9 +1,9 @@
 "use strict";
-import { LanguageService } from "@axibase/charts-language-service";
+import { LanguageService, ResourcesProviderBase } from "@axibase/charts-language-service";
 import { Thenable, worker } from "monaco-editor-core";
 import IWorkerContext = worker.IWorkerContext;
 import * as ls from "vscode-languageserver-types";
-import { ResourcesProvider } from "./resourcesProvider";
+import ResourcesProvider from "./resourcesProvider";
 
 export class ChartsWorker {
 
@@ -13,7 +13,7 @@ export class ChartsWorker {
   constructor(ctx: IWorkerContext, createData: ICreateData) {
     this._ctx = ctx;
     this._languageId = createData.languageId;
-    LanguageService.initialize(new ResourcesProvider());
+    LanguageService.initialize(ResourcesProvider as ResourcesProviderBase);
   }
 
   public doComplete(

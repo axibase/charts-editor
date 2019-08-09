@@ -10,3 +10,6 @@ Build project:
 
 Run local server:
 `npm run serve`
+
+Update language json settings from syntax core:
+`npm run update-resources`
