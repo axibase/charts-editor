@@ -1,6 +1,6 @@
 {
   "name": "@axibase/charts-editor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "index.js",
   "dependencies": {
     "@axibase/charts-language-service": "axibase/charts-language-service",
