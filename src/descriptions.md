@@ -418,6 +418,26 @@ Override grouped series legend when `group=entity`.
   
 Define the wait period after ATSD handles a server processing error before refreshing data.  
   
+## evaluateexpression
+  
+MVEL expression text applied to the series collections retrieved at the previous transformation step.  
+  
+## evaluatelibs  
+  
+List of MVEL script files imported in the expression context. The scripts can be uploaded on the Data > MVEL Script Viewer page.  
+  
+## evaluatemode  
+  
+Data consistency mode: STRICT or NOT_STRICT (default). Strict mode generates error when some of the joined data is missing.  
+  
+## evaluatescript  
+  
+MVEL script file imported in the expression context. The script can be uploaded on the Data > MVEL Script Viewer page.  
+  
+## evaluatetimezone  
+  
+Timezone used in calendar alignment. The default is the server timezone. List of supported timezone identifiers: https://axibase.com/docs/atsd/shared/timezone-list.html  
+
 ## exactmatch  
   
 Ignore series with tags, other than those specified in the series configuration.  
@@ -974,6 +994,10 @@ Supported wildcards: `*` and `?`.
 ## metric  
   
 Define the Metric.  
+  
+## metrics  
+  
+Supported only with the evaluate-expression setting. List of metrics for which series collections are loaded with the same entity and tags as in the main query.  
   
 ## metriclabel  
   
