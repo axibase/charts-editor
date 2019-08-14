@@ -1,6 +1,6 @@
 {
   "name": "@axibase/charts-editor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "dependencies": {
     "@axibase/charts-language-service": "axibase/charts-language-service",
@@ -11,7 +11,9 @@
     "clean": "rimraf dist monaco-editor-core",
     "copy": "mkdir monaco-editor-core && ncp ./node_modules/monaco-editor-core ./monaco-editor-core",
     "change-files": "ncp monaco-patch/mouseHandler.js monaco-editor-core/esm/vs/editor/browser/controller/mouseHandler.js && ncp  monaco-patch/scrollableElement.js monaco-editor-core/esm/vs/base/browser/ui/scrollbar/scrollableElement.js",
-    "patch-monaco": "npm i && npm run clean && npm run copy && npm run change-files"
+    "patch-monaco": "npm i && npm run clean && npm run copy && npm run change-files",
+    "upgrade": "npm update @axibase/charts-language-service && npm run update-resources && npm run build",
+    "update-resources": "cp node_modules/@axibase/charts-language-service/src/resources/**.json ./src && cp node_modules/@axibase/charts-language-service/src/resources/descriptions.md ./src && cp node_modules/@axibase/charts-language-service/src/resources/snippets/snippets.json ./snippets"
   },
   "repository": "https://github.com/axibase/charts-editor",
   "author": "Axibase Developers",
