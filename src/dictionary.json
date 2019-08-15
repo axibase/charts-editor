@@ -2110,6 +2110,7 @@
             "type": "string",
             "example": "name LIKE 'cpu*'",
             "section": "series",
+            "multiLine": true,
             "excludes": [
                 "evaluate-script"
             ]
