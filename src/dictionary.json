@@ -740,9 +740,10 @@
         {
             "displayName": "collapsible",
             "type": "boolean",
-            "example": false,
-            "defaultValue": true,
-            "section": "widget"
+            "example": true,
+            "defaultValue": false,
+            "section": "column",
+            "widget": "console"
         },
         {
             "displayName": "color",
@@ -7322,6 +7323,13 @@
                 "percentile\\((\\d{1,2}(\\.\\d)?|100)\\)",
                 "median"
             ]
+        },
+        {
+            "displayName": "summary-text",
+            "type": "string",
+            "example": "row.date",
+            "widget": "console",
+            "section": "column"
         },
         {
             "displayName": "table",

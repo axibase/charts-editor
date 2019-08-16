@@ -169,7 +169,9 @@ Displays background circle.
 Apply Unix style with black background.  
   
 ## collapsible  
-
+  
+If `true`, add controller to collapse or expand column cell and **Collapse All** button to widget header.  
+  
 ## columnalertexpression  
   
 Boolean expression to apply conditional style to bars. The CSS style must be specified in the `column-alert-style` setting.
@@ -997,7 +999,7 @@ Define the Metric.
   
 ## metrics  
   
-Supported only with the evaluate-expression setting. List of metrics for which series collections are loaded with the same entity and tags as in the main query.  
+Supported only with the `evaluate-expression` setting. List of metrics for which series collections are loaded with the same entity and tags as in the main query.  
   
 ## metriclabel  
   
@@ -1436,6 +1438,10 @@ Period by which loaded time series data is split.
 ## summarizestatistic  
   
 Statistical function applied to values within each period.  
+  
+## summarytext  
+  
+JavaScript expression returning caption used for cell if `collapsible = true`.  
   
 ## table  
   
