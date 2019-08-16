@@ -38,7 +38,9 @@ export const syntax = {
       "endlist",
       "if",
       "endif",
-      "in"
+      "in",
+      "expr",
+      "endexpr"
     ],
     sections: [
       "column",
@@ -59,7 +61,7 @@ export const syntax = {
       "threshold",
       "widget"
     ],
-    statistics: ["avg", "range", "value"],
+    statistics: ["avg", "range", "value", "count", "min", "max", "sum", "avg", "percentile", "median", "first", "last", "delta", "counter", "standard_deviation", "median_abs_dev", "wavg", "wtavg", "min_value_time", "max_value_time", "threshold_count", "threshold_duration", "threshold_percent"],
     constants: ["true", "false"],
     tokenizer: {
       root: [
