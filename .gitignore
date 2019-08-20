@@ -13,6 +13,7 @@ node_modules/
 
 # MacOS
 .DS_Store
+.idea
 
 # Monaco core
 monaco-editor-core/*
