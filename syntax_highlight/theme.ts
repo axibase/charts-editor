@@ -7,7 +7,7 @@ export const rules = [
     { token: "keyword.setting", foreground: "b03060" },
     { token: "keyword.statistics", foreground: "EE8033" },
     { token: "number", foreground: "68AA89" },
-    { token: "placeholder", foreground: "9DC7E7" },
+    { token: "placeholder", foreground: "4995c3" },
     { token: "string", foreground: "AA322B" }
 ];
 
