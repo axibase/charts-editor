@@ -50,13 +50,34 @@ export class ChartsWorker {
   public doFormat(uri: string, options: monaco.languages.FormattingOptions): Thenable<ls.TextEdit[]> {
     const document = this._getTextDocument(uri);
     if (document) {
-      const edits = LanguageService.getFormatter(
-        document.getText(),
+      const formattedText = LanguageService.getFormatter(
         ls.FormattingOptions.create(options.tabSize, options.insertSpaces)
-      ).lineByLine();
-      return Promise.resolve(edits);
+      ).format(document.getText());
+
+      return Promise.resolve(
+        this._substituteDocumentRange(document, formattedText)
+      );
     }
     return Promise.resolve([]);
+  }
+
+  /**
+   * Create text edit substituting whole document with formatted text
+   * @param document currently edited document
+   * @param formattedText fully formatted document's text
+   */
+  private _substituteDocumentRange(document: ls.TextDocument, formattedText: string): ls.TextEdit[] {
+    return [
+      ls.TextEdit.replace(
+        ls.Range.create(
+          ls.Position.create(0, 0),
+          ls.Position.create(
+            document.lineCount - 1, document.getText().length
+          )
+        ),
+        formattedText
+      )
+    ]
   }
 
   private _getTextDocument(uri: string): ls.TextDocument {
