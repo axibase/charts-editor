@@ -7188,15 +7188,28 @@
         },
         {
             "displayName": "source",
-            "widget": "console",
             "section": "widget",
             "type": "enum",
-            "defaultValue": "alert",
             "example": "message",
             "enum": [
                 "message",
-                "alert"
-            ]
+                "alert",
+                "message-stat"
+            ],
+            "override": {
+                "[widget == 'console']": {
+                    "enum": [
+                        "message",
+                        "alert"
+                    ],
+                    "defaultValue": "alert"
+                },
+                "[widget != 'console' && widget != 'property' && widget != '']": {
+                    "enum": [
+                        "message-stat"
+                    ]
+                }
+            }
         },
         {
             "displayName": "sql",
