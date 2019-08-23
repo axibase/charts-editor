@@ -1,9 +1,9 @@
 {
   "name": "@axibase/charts-editor",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "index.js",
   "dependencies": {
-    "@axibase/charts-language-service": "axibase/charts-language-service",
+    "@axibase/charts-language-service": "github:axibase/charts-language-service",
     "monaco-editor": "^0.17.0"
   },
   "scripts": {

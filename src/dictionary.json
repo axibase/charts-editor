@@ -1048,7 +1048,7 @@
             "displayName": "disconnect-count",
             "type": "integer",
             "example": 50,
-            "section": "widget",
+            "section": "series",
             "widget": "chart"
         },
         {
@@ -1063,7 +1063,7 @@
             "displayName": "disconnect-interval",
             "type": "interval",
             "example": "1 minute",
-            "section": "widget",
+            "section": "series",
             "widget": "chart"
         },
         {
