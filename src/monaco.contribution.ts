@@ -3,8 +3,13 @@ import { language_configuration, syntax } from "../syntax_highlight/regexes";
 import { rules, themeName } from "../syntax_highlight/theme";
 
 const data = require("../package.json");
+Object.defineProperty(window, 'CHARTS_EDITOR_VERSION', {
+  value: data && data.version ? data.version : 'hello, test',
+  writable: false
+});
+
 // @ts-ignore
-window['CHARTS_EDITOR_VERSION'] = data && data.version;
+console.log(window.CHARTS_EDITOR_VERSION)
 
 const languageID = "axibaseCharts";
 
