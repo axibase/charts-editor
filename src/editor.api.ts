@@ -9,7 +9,6 @@ interface WorkerPaths {
 
 class EditorAPI {
     public editorActions: EditorActions = new EditorActions();
-    public static VERSION: string = version;
 
     public initWorkers(paths: WorkerPaths): void {
         if (!paths) {
@@ -23,7 +22,7 @@ class EditorAPI {
             getWorker: function (moduleId: string, label: string) {
                 if (label === "axibaseCharts") {
                     // const CHARTS_EDITOR_VERSION = window.getVersion instanceof Function ? window.getVersion() : '';
-                    return new Worker(`${paths.ChartsWorker}?v=${EditorAPI.VERSION}`);
+                    return new Worker(`${paths.ChartsWorker}?v=${version}`);
                 }
 
                 return new Worker(paths.EditorWorker);
