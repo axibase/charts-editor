@@ -2,6 +2,10 @@ import { editor, Emitter, IEvent, IRange, languages } from "monaco-editor-core";
 import { language_configuration, syntax } from "../syntax_highlight/regexes";
 import { rules, themeName } from "../syntax_highlight/theme";
 
+const data = require("../package.json");
+// @ts-ignore
+window['CHARTS_EDITOR_VERSION'] = data && data.version;
+
 const languageID = "axibaseCharts";
 
 export class LanguageServiceDefaultsImpl
