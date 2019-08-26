@@ -50,4 +50,4 @@ class EditorAPI {
     }
 }
 
-export default new EditorAPI();
+export const API = new EditorAPI();
