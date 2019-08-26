@@ -1,1 +1,1 @@
-export const getVerion = () => JSON.stringify(require('../package.json').version);
+export const getVersion = () => require('../package.json').version;
