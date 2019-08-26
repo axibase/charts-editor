@@ -7,7 +7,7 @@ interface WorkerPaths {
     ChartsWorker: string;
 }
 
-class EditorAPI {
+export class EditorAPI {
     public editorActions: EditorActions = new EditorActions();
 
     public initWorkers(paths: WorkerPaths): void {
@@ -48,5 +48,3 @@ class EditorAPI {
         return this.create(options);
     }
 }
-
-export const API = new EditorAPI();
