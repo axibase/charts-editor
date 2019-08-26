@@ -21,7 +21,6 @@ class EditorAPI {
         (<any>self).MonacoEnvironment = {
             getWorker: function (moduleId: string, label: string) {
                 if (label === "axibaseCharts") {
-                    // const CHARTS_EDITOR_VERSION = window.getVersion instanceof Function ? window.getVersion() : '';
                     return new Worker(`${paths.ChartsWorker}?v=${version}`);
                 }
 
