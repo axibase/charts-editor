@@ -3,13 +3,6 @@ import { language_configuration, syntax } from "../syntax_highlight/regexes";
 import { rules, themeName } from "../syntax_highlight/theme";
 
 const data = require("../package.json");
-Object.defineProperty(window, 'CHARTS_EDITOR_VERSION', {
-  value: data && data.version ? data.version : 'hello, test',
-  writable: false
-});
-
-// @ts-ignore
-console.log(window.CHARTS_EDITOR_VERSION)
 
 const languageID = "axibaseCharts";
 
@@ -27,6 +20,13 @@ export class LanguageServiceDefaultsImpl
   ) {
     this._languageId = languageId;
     this.setDiagnosticsOptions(diagnosticsOptions);
+    Object.defineProperty(window, 'CHARTS_EDITOR_VERSION', {
+      value: data && data.version ? data.version : 'hello, test',
+      writable: false
+    });
+    
+    // @ts-ignore
+    console.log(window.CHARTS_EDITOR_VERSION)
   }
 
   get onDidChange(): IEvent<monaco.languages.charts.LanguageServiceDefaults> {
