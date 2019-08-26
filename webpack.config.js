@@ -1,6 +1,7 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const webpack = require("webpack");
+const package = require("./package.json");
 
 module.exports = {
   target: "node",
@@ -45,6 +46,9 @@ module.exports = {
     new CopyPlugin([
       { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
     ]),
+    new webpack.DefinePlugin({
+      CHARTS_EDITOR_VERSION: JSON.stringify(package.version),
+    })
   ],
   resolve: {
     extensions: [".ts", ".js"],
