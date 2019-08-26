@@ -6,12 +6,13 @@ module.exports = {
   target: "node",
   entry: {
     main: "./src/monaco.contribution.ts",
+    version: "./src/version.ts",
     "charts.worker": "./src/charts.worker.ts",
     "editor.worker": "monaco-editor/esm/vs/editor/editor.worker.js"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].js?v=[contenthash]",
+    filename: "[name].js",
     publicPath: "dist",
     libraryTarget: "umd",
     globalObject: 'self'
@@ -44,10 +45,7 @@ module.exports = {
     }),
     new CopyPlugin([
       { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
-    ]),
-    new webpack.DefinePlugin({
-      CHARTS_EDITOR_VERSION: JSON.stringify('5fa3b9'),
-    })
+    ])
   ],
   resolve: {
     extensions: [".ts", ".js"],
