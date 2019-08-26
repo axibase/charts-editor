@@ -1,7 +1,6 @@
 const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
 const webpack = require("webpack");
-const package = require("./package.json");
 
 module.exports = {
   target: "node",
