@@ -37,7 +37,7 @@ export class EditorActions {
         /**
          * Editor save callback
          */
-        var onSave = (
+        const onSave = (
             options.onSave instanceof Function
         ) ? options.onSave : FN_NOOP;
 
@@ -183,10 +183,10 @@ export class EditorActions {
      * @return {HTMLElement}
      */
     private createFontControls(): HTMLElement {
-        var container = document.createElement('div');
+        const container = document.createElement('div');
         container.classList.add('font-controls');
 
-        var decreaseFontBtn = document.createElement('div');
+        const decreaseFontBtn = document.createElement('div');
         decreaseFontBtn.className += ' btn-minus control-button';
 
         decreaseFontBtn.addEventListener('click', () => {
@@ -238,7 +238,7 @@ const localSettings = {
 
     update: function (name: string, setting: any) {
         try {
-            var settings = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY));
+            const settings = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY));
 
             settings[name] = setting;
             localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
