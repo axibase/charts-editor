@@ -3,7 +3,7 @@
   "version": "0.0.10",
   "main": "index.js",
   "dependencies": {
-    "@axibase/charts-language-service": "github:axibase/charts-language-service#columns-keys-fix",
+    "@axibase/charts-language-service": "github:axibase/charts-language-service",
     "monaco-editor": "^0.17.0"
   },
   "scripts": {

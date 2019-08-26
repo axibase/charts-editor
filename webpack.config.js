@@ -47,7 +47,7 @@ module.exports = {
       { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
     ]),
     new webpack.DefinePlugin({
-      CHARTS_EDITOR_VERSION: JSON.stringify(package.version),
+      CHARTS_EDITOR_VERSION: JSON.stringify('5fa3b9'),
     })
   ],
   resolve: {
