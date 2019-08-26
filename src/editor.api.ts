@@ -21,8 +21,7 @@ class EditorAPI {
         (<any>self).MonacoEnvironment = {
             getWorker: function (moduleId: string, label: string) {
                 if (label === "axibaseCharts") {
-                    console.log(`Worker is initing, its url is ${paths.ChartsWorker}?v=${version}`);
-                    
+
                     return new Worker(`${paths.ChartsWorker}?v=${version}`);
                 }
 

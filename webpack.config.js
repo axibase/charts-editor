@@ -45,10 +45,7 @@ module.exports = {
     }),
     new CopyPlugin([
       { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
-    ]),
-    new webpack.DefinePlugin({
-      $$CHARTS_EDITOR_VERSION$$: JSON.stringify(require("./package.json").version)
-    })
+    ])
   ],
   resolve: {
     extensions: [".ts", ".js"],
