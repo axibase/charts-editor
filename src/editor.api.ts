@@ -7,10 +7,15 @@ interface WorkerPaths {
     ChartsWorker: string;
 }
 
-export class EditorAPI {
-    public editorActions: EditorActions = new EditorActions();
+export class ChartsEditor {
+    /** Init, format, getValue, etc — actions that deal with editor instance */
+    public static editorActions: EditorActions = new EditorActions();
 
-    public initWorkers(paths: WorkerPaths): void {
+    /**
+     * Create workers from script paths
+     * @param paths 
+     */
+    public static initWorkers(paths: WorkerPaths): void {
         if (!paths) {
             throw new Error(`Can't create workers — worker paths are missing`)
         }
@@ -31,13 +36,22 @@ export class EditorAPI {
 
     }
 
-    public create(options: EditorOptions): editor.ICodeEditor {
-        this.editorActions.initEditor(options);
+    /**
+     * Create editor instance
+     * @param options 
+     */
+    public static create(options: EditorOptions): editor.ICodeEditor {
+        ChartsEditor.editorActions.initEditor(options);
 
-        return this.editorActions.chartsEditor;
+        return ChartsEditor.editorActions.chartsEditor;
     }
 
-    public fromTextArea(element: HTMLTextAreaElement, options: EditorOptions): editor.ICodeEditor {
+    /**
+     * Create editor instance from textarea
+     * @param element 
+     * @param options 
+     */
+    public static fromTextArea(element: HTMLTextAreaElement, options: EditorOptions): editor.ICodeEditor {
         if (!element) {
             console.warn('Can\'t create editor from textarea. Element is missing');
             return null;
@@ -45,6 +59,6 @@ export class EditorAPI {
 
         element.style.display = 'none';
         options.value = element.value;
-        return this.create(options);
+        return ChartsEditor.create(options);
     }
 }
