@@ -7,6 +7,9 @@ interface WorkerPaths {
     ChartsWorker: string;
 }
 
+/**
+ * Class for editor instance creation and manipulation
+ */
 export class ChartsEditor {
     /** Init, format, getValue, etc — actions that deal with editor instance */
     public static editorActions: EditorActions = new EditorActions();
