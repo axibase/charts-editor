@@ -11,7 +11,7 @@ export interface EditorOptions {
     onSave?: () => {}
 }
 
-const FN_NOOP = function () { };
+const FN_NOOP = () => { };
 const SETTINGS_STORAGE_KEY = 'ChartsEditorSettings';
 
 export class EditorActions {
@@ -134,7 +134,7 @@ export class EditorActions {
             forceMoveMarkers: true
         };
 
-        this.chartsEditor.executeEdits("onPaste", [edits]);
+        this.chartsEditor.executeEdits('onPaste', [edits]);
     };
 
     /**
@@ -261,7 +261,7 @@ const localSettings = {
 /**
  * Run save on Ctrl+S or Cmd+S
  */
-window.addEventListener("keydown", (event) => {
+window.addEventListener('keydown', (event) => {
     if (event.keyCode === 83 && (event.ctrlKey || event.metaKey)) {
 
         EditorActions.saveEditorContents();
