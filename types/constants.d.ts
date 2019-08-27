@@ -1,1 +1,1 @@
-declare const CURRENT_TIME: string;
+declare const VERSION: string;
