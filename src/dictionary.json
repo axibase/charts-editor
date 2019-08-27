@@ -1048,7 +1048,7 @@
             "displayName": "disconnect-count",
             "type": "integer",
             "example": 50,
-            "section": "widget",
+            "section": "series",
             "widget": "chart"
         },
         {
@@ -1063,7 +1063,7 @@
             "displayName": "disconnect-interval",
             "type": "interval",
             "example": "1 minute",
-            "section": "widget",
+            "section": "series",
             "widget": "chart"
         },
         {
@@ -5453,7 +5453,7 @@
         },
         {
             "displayName": "path",
-            "section": "configuration",
+            "section": "widget",
             "type": "string",
             "example": "/messages/query"
         },
@@ -7188,15 +7188,28 @@
         },
         {
             "displayName": "source",
-            "widget": "console",
             "section": "widget",
             "type": "enum",
-            "defaultValue": "alert",
             "example": "message",
             "enum": [
                 "message",
-                "alert"
-            ]
+                "alert",
+                "message-stat"
+            ],
+            "override": {
+                "[widget == 'console']": {
+                    "enum": [
+                        "message",
+                        "alert"
+                    ],
+                    "defaultValue": "alert"
+                },
+                "[widget != 'console' && widget != 'property' && widget != '']": {
+                    "enum": [
+                        "message-stat"
+                    ]
+                }
+            }
         },
         {
             "displayName": "sql",
