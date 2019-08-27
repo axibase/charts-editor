@@ -29,7 +29,7 @@ export class ChartsEditor {
             getWorker: function (moduleId: string, label: string) {
                 if (label === "axibaseCharts") {
 
-                    return new Worker(`${paths.ChartsWorker}?v=${new Date().getTime()}`);
+                    return new Worker(`${paths.ChartsWorker}?v=${CURRENT_TIME}`);
                 }
 
                 return new Worker(paths.EditorWorker);

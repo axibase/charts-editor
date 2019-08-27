@@ -1,0 +1,1 @@
+declare const CURRENT_TIME: boolean;
