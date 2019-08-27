@@ -1,6 +1,5 @@
 import { EditorActions, EditorOptions } from "./editorActions";
 import { editor } from "monaco-editor-core";
-import { version } from "../package.json";
 
 interface WorkerPaths {
     EditorWorker: string;
@@ -30,7 +29,7 @@ export class ChartsEditor {
             getWorker: function (moduleId: string, label: string) {
                 if (label === "axibaseCharts") {
 
-                    return new Worker(`${paths.ChartsWorker}?v=${version}`);
+                    return new Worker(`${paths.ChartsWorker}?v=${new Date().getTime()}`);
                 }
 
                 return new Worker(paths.EditorWorker);
