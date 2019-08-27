@@ -1,1 +1,1 @@
-declare const CURRENT_TIME: boolean;
+declare const CURRENT_TIME: string;

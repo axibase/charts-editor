@@ -46,7 +46,7 @@ module.exports = {
       { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
     ]),
     new webpack.DefinePlugin({
-      CURRENT_TIME: new Date().getTime()
+      CURRENT_TIME: JSON.stringify(new Date().getTime())
     })
   ],
   resolve: {
