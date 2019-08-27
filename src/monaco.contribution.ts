@@ -1,11 +1,11 @@
 import { editor, Emitter, IEvent, languages } from "monaco-editor-core";
 import { language_configuration, syntax } from "../syntax_highlight/regexes";
 import { rules, themeName } from "../syntax_highlight/theme";
-import './editor.api';
+import { ChartsEditor } from './editor.api';
 
 const languageID = "axibaseCharts";
 
-export class LanguageServiceDefaultsImpl
+class LanguageServiceDefaultsImpl
   implements monaco.languages.charts.LanguageServiceDefaults {
   private _onDidChange = new Emitter<
     monaco.languages.charts.LanguageServiceDefaults
@@ -82,3 +82,7 @@ languages.register({
 });
 
 languages.setLanguageConfiguration(languageID, language_configuration as any);
+
+export {
+  LanguageServiceDefaultsImpl, ChartsEditor
+}
