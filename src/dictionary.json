@@ -5453,7 +5453,7 @@
         },
         {
             "displayName": "path",
-            "section": "configuration",
+            "section": "widget",
             "type": "string",
             "example": "/messages/query"
         },
