@@ -1,15 +1,22 @@
-# charts-editor
+# Charts Editor
 
-## Quick start
+Service using axibase/charts-language-service an syntax core and monaco editor.
 
-Install dependencies:
+## Update to latest charts-ls release
+
+1. Copy resources and build:
+    `npm run upgrade-editor`
+<br>
+2. Open PR and merge it
+
+## Development & testing guide
+1. Switch to branch *stage*
+<br>
+2. Install dependencies:
 `npm i`
-
-Build project:
+<br>
+3. Build project:
 `npm run build`
-
-Run local server:
+<br>
+4. Run local server:
 `npm run serve`
-
-Update language json settings from syntax core:
-`npm run update-resources`
