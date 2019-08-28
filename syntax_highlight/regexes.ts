@@ -1,6 +1,10 @@
 // tslint:disable object-literal-sort-keys
 // tslint:disable max-line-length
 export const language_configuration = {
+  comments: {
+    lineComment: "//",
+    blockComment: ["/*", "*/"],
+  },
   brackets: [
     ["{", "}"],
     ["[", "]"],
