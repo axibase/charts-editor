@@ -822,7 +822,8 @@
             "displayName": "columns",
             "type": "string",
             "example": "pid, command",
-            "section": "widget"
+            "section": "widget",
+            "multiLine": true
         },
         {
             "displayName": "column-time",
