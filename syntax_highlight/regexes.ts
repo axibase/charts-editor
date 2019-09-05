@@ -31,6 +31,8 @@ export const syntax = {
     controls: [
       "script",
       "endscript",
+      "sql",
+      "endsql",
       "import",
       "csv",
       "endcsv",
@@ -82,7 +84,7 @@ export const syntax = {
         ],
         { regex: /^[ \t]*\[[a-z]+\]/, action: "keyword.section" },
         {
-          regex: /^[ \t]*\w[-\w\s\d_]+?(?=\s*=)|column-.*/,
+          regex: /^[ \t]*\w[-\w\d_]+?(?=\s*=)|column-.*/,
           action: "keyword.setting"
         },
         { regex: /[(@{|})]/, action: "placeholder" },
