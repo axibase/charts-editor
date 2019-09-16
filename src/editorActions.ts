@@ -7,6 +7,7 @@ export interface EditorOptions {
     theme?: string;
     fontFamily?: string;
     fontSize?: number;
+    tabSize?: number;
     onChange?: () => {},
     onSave?: () => {}
 }
@@ -28,6 +29,7 @@ export class EditorActions {
         const theme = options.theme || 'chartsTheme';
         const fontFamily = options.fontFamily || 'Source Code Pro';
         const fontSize = options.fontSize || 12;
+        const tabSize = options.tabSize || 2;
         /**
          * Editor onchange (type, paste text) callback
          */
@@ -89,6 +91,11 @@ export class EditorActions {
         });
 
         /**
+         * Set editor tabSize
+         */
+        this.chartsEditor.getModel().updateOptions({ tabSize });
+
+        /**
          * Activate callback for editor content changes
          */
         this.chartsEditor.getModel().onDidChangeContent(onChange);
@@ -136,6 +143,17 @@ export class EditorActions {
 
         this.chartsEditor.executeEdits('onPaste', [edits]);
     };
+
+    /**
+     * Set model tab size
+     * @param tabSize
+     */
+    public setTabSize(tabSize: number): void {
+        tabSize = tabSize || 2;
+        if (this.chartsEditor) {
+            this.chartsEditor.getModel().updateOptions({ tabSize });
+        }
+    }
 
     /**
      * Get editor's text value
