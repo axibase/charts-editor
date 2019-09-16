@@ -43,6 +43,8 @@ export const syntax = {
       "list",
       "endlist",
       "if",
+      "else",
+      "elseif",
       "endif",
       "in",
       "expr",

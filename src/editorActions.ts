@@ -14,6 +14,7 @@ export interface EditorOptions {
 
 const FN_NOOP = () => { };
 const SETTINGS_STORAGE_KEY = 'ChartsEditorSettings';
+const DEFAULT_TAB_SIZE: number = 2;
 
 export class EditorActions {
     public chartsEditor: editor.ICodeEditor;
@@ -29,7 +30,7 @@ export class EditorActions {
         const theme = options.theme || 'chartsTheme';
         const fontFamily = options.fontFamily || 'Source Code Pro';
         const fontSize = options.fontSize || 12;
-        const tabSize = options.tabSize || 2;
+        const tabSize = options.tabSize || DEFAULT_TAB_SIZE;
         /**
          * Editor onchange (type, paste text) callback
          */
@@ -149,7 +150,7 @@ export class EditorActions {
      * @param tabSize
      */
     public setTabSize(tabSize: number): void {
-        tabSize = tabSize || 2;
+        tabSize = tabSize || DEFAULT_TAB_SIZE;
         if (this.chartsEditor) {
             this.chartsEditor.getModel().updateOptions({ tabSize });
         }
