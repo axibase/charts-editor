@@ -6727,6 +6727,7 @@
             "displayName": "size",
             "type": "string",
             "defaultValue": "1",
+            "minValue": 0,
             "example": "3",
             "widget": "treemap",
             "script": {
