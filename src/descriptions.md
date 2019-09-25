@@ -498,6 +498,18 @@ Integration parameter `d`, a number of `0` or `1`.
   
 Auto-regression parameter `p`.  
   
+## forecastbaselinecount  
+  
+Number of previous windows, excluding the last window, used in baseline calculation.  
+  
+## forecastbaselinefunction  
+  
+Statistical function used to filter values when calculating baseline.  
+  
+## forecastbaselineperiod  
+  
+The distance between the previous windows used in baseline calculation.  
+  
 ## forecasthorizoninterval  
   
 Generate a forecast for the specified interval into the future starting with last sample of the loaded series.
