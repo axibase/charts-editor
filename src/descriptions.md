@@ -1168,6 +1168,10 @@ Specifies an action to be performed when the user selects a series. For a Calend
   
 Disable [double click functionality](https://axibase.com/docs/charts/widgets/pie-chart/#on-series-double-click) in the widget.  
   
+## ontitleclick  
+  
+Action, executed on title click.  
+  
 ## options  
   
 Comma-separated list of option values.  
