@@ -2988,6 +2988,13 @@
             "widget": "gauge"
         },
         {
+            "displayName": "grid-display",
+            "type": "boolean",
+            "example": true,
+            "section": "configuration",
+            "defaultValue": false
+        },
+        {
             "displayName": "group",
             "section": "widget",
             "widget": "bar",
@@ -3082,7 +3089,13 @@
             "type": "number",
             "minValue": 0,
             "example": 2,
-            "section": "widget"
+            "section": "widget",
+            "defaultValue": 1,
+            "override": {
+                "[section == 'configuration']": {
+                    "defaultValue": 4
+                }
+            }
         },
         {
             "displayName": "hidden",
@@ -3289,7 +3302,7 @@
             "displayName": "icon-position",
             "type": "enum",
             "example": "bottom",
-            "section": "widget",
+            "section": "series",
             "widget": "text",
             "enum": [
                 "bottom",
@@ -7288,7 +7301,7 @@
         },
         {
             "displayName": "stack",
-            "widget": "bar",
+            "widget": ["chart", "bar"],
             "type": "boolean",
             "section": "widget",
             "example": false,
@@ -8887,7 +8900,13 @@
             "type": "number",
             "example": 2,
             "minValue": 0,
-            "section": "widget"
+            "section": "widget",
+            "defaultValue": 1,
+            "override": {
+                "[section == 'configuration']": {
+                    "defaultValue": 6
+                }
+            }
         },
         {
             "displayName": "zoom-svg",
