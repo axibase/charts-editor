@@ -686,6 +686,10 @@ Specify the number of gradient colors between each color in Color Range.
   
 Color intensity of the first and the last sector in each range.  
   
+## griddisplay  
+  
+Show grid displaying how many widgets can be in group.  
+  
 ## groupfirst  
   
 Control the sequence of aggregation and grouping. If set to `true`, grouping is performed before aggregation.  
