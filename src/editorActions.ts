@@ -1,4 +1,4 @@
-import { editor } from "monaco-editor-core";
+import {editor} from "monaco-editor-core";
 
 export interface EditorOptions {
     editorId?: string;
@@ -12,16 +12,19 @@ export interface EditorOptions {
     onSave?: () => {}
 }
 
-const FN_NOOP = () => { };
+const FN_NOOP = () => {
+};
 const SETTINGS_STORAGE_KEY = 'ChartsEditorSettings';
 const DEFAULT_TAB_SIZE: number = 2;
 
 export class EditorActions {
     public chartsEditor: editor.ICodeEditor;
+    public gridEnabled: boolean = false;
+
     public initEditor(options: EditorOptions): void {
         /** Editor is already initialized */
         if (this.chartsEditor) {
-            return
+            return;
         }
 
         const editorId = options.editorId || 'editorHolder';
@@ -75,6 +78,25 @@ export class EditorActions {
             }
         );
 
+        document.getElementById("portal").addEventListener("load", () => {
+            let gridEnabled = false;
+            const editorValue = this.getEditorValue();
+            console.log("load event triggered")
+            const gridButton = document.getElementById("gridBtn");
+
+            if (!gridButton.classList.contains("loaded")) {
+                gridEnabled = /grid-display\s*=\strue/gm.test(editorValue);
+                gridButton.classList.add("loaded");
+            } else {
+                if (!gridButton.classList.contains("manual-enable")) {
+                    gridEnabled = !/grid-display\s*=\sfalse/gm.test(editorValue) && editorValue !== options.value;
+                } else {
+                    gridEnabled = gridButton.classList.contains("active");
+                }
+            }
+            connect(gridEnabled).then(() => console.log("loaded successfully from constructor"));
+        });
+
         /**
          * Create controls to increase/decrease editor's font-size
          * @type {HTMLElement}
@@ -83,18 +105,18 @@ export class EditorActions {
 
         editorHolder.appendChild(fontControls);
 
-        editorHolder.addEventListener('mouseover', function () {
+        editorHolder.addEventListener('mouseover', function() {
             fontControls.style.opacity = '1';
         });
 
-        editorHolder.addEventListener('mouseout', function () {
+        editorHolder.addEventListener('mouseout', function() {
             fontControls.style.opacity = '0';
         });
 
         /**
          * Set editor tabSize
          */
-        this.chartsEditor.getModel().updateOptions({ tabSize });
+        this.chartsEditor.getModel().updateOptions({tabSize});
 
         /**
          * Activate callback for editor content changes
@@ -106,10 +128,20 @@ export class EditorActions {
 
     /**
      * Some actions not connected with editor instance which should be performed on save
-     * @param onSave 
+     * @param onSave
      */
     public static saveEditorContents(onSave: Function = FN_NOOP) {
         onSave();
+    }
+
+    public toggleGrid(): void {
+        this.gridEnabled = !this.gridEnabled;
+        connect(this.gridEnabled).then(() => console.log("grid was toggled"));
+    }
+
+    public setGridValue(value: boolean): void {
+        console.log("setting grid value")
+        connect(value).then(() => console.log("grid enabled"));
     }
 
     /**
@@ -119,7 +151,7 @@ export class EditorActions {
     public insertEditorValue(text: string): void {
         /** Check if editor has been initialized */
         if (!this.chartsEditor) {
-            return
+            return;
         }
 
         const endLine = this.chartsEditor.getModel().getLineCount();
@@ -132,7 +164,7 @@ export class EditorActions {
         text = (endLine > 1) ? "\n\n" + text : text;
 
         const edits = {
-            identifier: { major: 1, minor: 1 },
+            identifier: {major: 1, minor: 1},
             range: new monaco.Range(endLine + 1, endCharacter, endLine + 1, endCharacter),
             text: text,
             /**
@@ -152,7 +184,7 @@ export class EditorActions {
     public setTabSize(tabSize: number): void {
         tabSize = tabSize || DEFAULT_TAB_SIZE;
         if (this.chartsEditor) {
-            this.chartsEditor.getModel().updateOptions({ tabSize });
+            this.chartsEditor.getModel().updateOptions({tabSize});
         }
     }
 
@@ -238,11 +270,46 @@ export class EditorActions {
     };
 }
 
+function connect(value: boolean = false) {
+    const gridButton = document.getElementById("gridBtn");
+    return new Promise((resolve, reject) => {
+        let stopped = false;
+
+        setTimeout((message) => {
+            stopped = true;
+            reject(message);
+        }, 3000, "timeout");
+
+        const connected = function ok(event: MessageEvent) {
+            stopped = true;
+            if (event.data.type === "axiToggleGridResponse" && event.data.value === value) {
+                gridButton.classList.toggle("active", event.data.value);
+            }
+            window.removeEventListener("message", ok);
+            resolve();
+        };
+
+        window.addEventListener("message", connected);
+
+        const ping = function run() {
+            if (!stopped) {
+                (document.getElementById("portal") as HTMLIFrameElement).contentWindow.postMessage({
+                    type: "axiToggleGrid",
+                    value
+                }, "*");
+                setTimeout(run, 50);
+            }
+        };
+
+        ping();
+    });
+}
+
 /**
  * Helper functions to keep editor settings in localStorage
  */
 const localSettings = {
-    init: function (settings: EditorOptions) {
+    init: function(settings: EditorOptions) {
         try {
             if (localStorage.getItem(SETTINGS_STORAGE_KEY)) {
                 // Settings were already saved
@@ -255,7 +322,7 @@ const localSettings = {
         }
     },
 
-    update: function (name: string, setting: any) {
+    update: function(name: string, setting: any) {
         try {
             const settings = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY));
 
@@ -266,7 +333,7 @@ const localSettings = {
         }
     },
 
-    get: function (name: string) {
+    get: function(name: string) {
         try {
             return JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY))[name];
         } catch (e) {
