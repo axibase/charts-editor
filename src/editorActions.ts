@@ -1,4 +1,4 @@
-import { editor } from "monaco-editor-core";
+import {editor} from "monaco-editor-core";
 
 export interface EditorOptions {
     editorId?: string;
@@ -19,7 +19,8 @@ interface Subscriber {
 }
 
 // tslint:disable-next-line: no-empty
-const FN_NOOP = () => { };
+const FN_NOOP = () => {
+};
 const SETTINGS_STORAGE_KEY = "ChartsEditorSettings";
 const DEFAULT_TAB_SIZE: number = 2;
 
@@ -32,9 +33,15 @@ export class EditorActions {
     public static saveEditorContents(onSave: Function = FN_NOOP) {
         onSave();
     }
+
     public chartsEditor: editor.ICodeEditor;
     public gridEnabled: boolean = false;
     private subscribers: Subscriber[] = [];
+
+    get gridStatus(): boolean {
+        const explicitValue = /display-grid\s*=\s*(true|false)/gm.exec(this.getEditorValue());
+        return this.gridEnabled;
+    }
 
     public initEditor(options: EditorOptions): void {
         /** Editor is already initialized */
@@ -116,7 +123,7 @@ export class EditorActions {
         /**
          * Set editor tabSize
          */
-        this.chartsEditor.getModel().updateOptions({ tabSize });
+        this.chartsEditor.getModel().updateOptions({tabSize});
 
         /**
          * Activate callback for editor content changes
@@ -157,13 +164,14 @@ export class EditorActions {
              * (they obviously aren't), automatically expand range
              */
             forceMoveMarkers: true,
-            identifier: { major: 1, minor: 1 },
+            identifier: {major: 1, minor: 1},
             range: new monaco.Range(endLine + 1, endCharacter, endLine + 1, endCharacter),
             text
         };
 
         this.chartsEditor.executeEdits("onPaste", [edits]);
     }
+
     /**
      * Set model tab size
      * @param tabSize
@@ -171,7 +179,7 @@ export class EditorActions {
     public setTabSize(tabSize: number): void {
         tabSize = tabSize || DEFAULT_TAB_SIZE;
         if (this.chartsEditor) {
-            this.chartsEditor.getModel().updateOptions({ tabSize });
+            this.chartsEditor.getModel().updateOptions({tabSize});
         }
     }
 
@@ -187,6 +195,7 @@ export class EditorActions {
 
         return this.chartsEditor.getValue();
     }
+
     /**
      * Format editor's config
      */
@@ -196,6 +205,7 @@ export class EditorActions {
             this.chartsEditor.trigger(this.getEditorValue(), "editor.action.formatDocument", {});
         }
     }
+
     /**
      * Trigger editor redraw
      */
@@ -204,6 +214,7 @@ export class EditorActions {
             this.chartsEditor.layout();
         }
     }
+
     /**
      * Brings focus to textarea
      */
@@ -214,8 +225,6 @@ export class EditorActions {
     }
 
     public subscribeControl(button: HTMLElement, action: () => void): void {
-        console.log("subscribed a button");
-        console.log(this, "this from subscribe")
         this.subscribers.push({
             Action: action,
             Subject: button
@@ -223,10 +232,8 @@ export class EditorActions {
     }
 
     private notifyControl(): void {
-        console.log("subscribers are notified");
-        console.log(this)
-        for (let { Subject, Action } of this.subscribers) {
-            const func = Action.bind(Subject);
+        for (let {Subject, Action} of this.subscribers) {
+            const func = Action.bind(Subject, this.gridEnabled);
             func();
         }
     }
@@ -361,5 +368,4 @@ window.addEventListener("keydown", (event) => {
 
 document.getElementById("portal").addEventListener("load", () => {
     const gridEnabled = localSettings.get("gridEnabled") || false;
-    sendMessage(gridEnabled).then(() => console.log("portal connected after reload"));
 });
