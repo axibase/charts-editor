@@ -1,4 +1,4 @@
-import {editor} from "monaco-editor-core";
+import { editor } from "monaco-editor-core";
 
 export interface EditorOptions {
     editorId?: string;
@@ -10,7 +10,6 @@ export interface EditorOptions {
     tabSize?: number;
     onChange?: () => {};
     onSave?: () => {};
-    gridEnabled?: boolean;
 }
 
 interface Subscriber {
@@ -19,8 +18,7 @@ interface Subscriber {
 }
 
 // tslint:disable-next-line: no-empty
-const FN_NOOP = () => {
-};
+const FN_NOOP = () => { };
 const SETTINGS_STORAGE_KEY = "ChartsEditorSettings";
 const DEFAULT_TAB_SIZE: number = 2;
 
@@ -35,12 +33,22 @@ export class EditorActions {
     }
 
     public chartsEditor: editor.ICodeEditor;
-    public gridEnabled: boolean = false;
     private subscribers: Subscriber[] = [];
 
+    /**
+     * Determine grid display status
+     * 1) Is grid-display set explicitly to true|false?
+     * 2) Is grid control pressed? (value is kept in localStorage)
+     */
     get gridStatus(): boolean {
-        const explicitValue = /display-grid\s*=\s*(true|false)/gm.exec(this.getEditorValue());
-        return this.gridEnabled;
+        const match = /grid-display\s*=\s*(true|false)/gm.exec(this.getEditorValue());
+        let explicitValue = false;
+
+        if (match) {
+            explicitValue = match[1] === "true";
+        }
+
+        return localSettings.get("gridEnabled") || explicitValue;
     }
 
     public initEditor(options: EditorOptions): void {
@@ -56,7 +64,12 @@ export class EditorActions {
         const fontFamily = options.fontFamily || "Source Code Pro";
         const fontSize = options.fontSize || 12;
         const tabSize = options.tabSize || DEFAULT_TAB_SIZE;
-        this.gridEnabled = options.gridEnabled || false;
+
+        document.getElementById("portal").addEventListener("load", () => {
+            sendMessage(this.gridStatus);
+        });
+
+        window.addEventListener("message", (event: MessageEvent) => this.notifyControl(event));
 
         /**
          * Editor onchange (type, paste text) callback
@@ -73,11 +86,15 @@ export class EditorActions {
         ) ? options.onSave : FN_NOOP;
 
         /**
+         * On page reload clear grid-display setting
+         */
+        localSettings.delete("gridEnabled");
+
+        /**
          * Write editor's settings to localStorage
          */
         localSettings.init({
-            fontSize,
-            gridEnabled: /grid-display\s*=\strue/gm.test(value)
+            fontSize
         });
 
         const editorHolder = document.getElementById(editorId);
@@ -123,20 +140,29 @@ export class EditorActions {
         /**
          * Set editor tabSize
          */
-        this.chartsEditor.getModel().updateOptions({tabSize});
+        this.chartsEditor.getModel().updateOptions({ tabSize });
 
         /**
          * Activate callback for editor content changes
          */
-        this.chartsEditor.getModel().onDidChangeContent(onChange);
+        this.chartsEditor.getModel().onDidChangeContent(() => {
+            onChange();
+            if (localSettings.get("gridEnabled") !== false && !/grid-display\s*=\s*false/.test(
+                this.getEditorValue()
+            )) {
+                (document.getElementById("portal") as HTMLIFrameElement).contentWindow.postMessage({
+                    type: "axiToggleGrid",
+                    value: true
+                }, "*");
+            }
+        });
 
         EditorActions.saveEditorContents.bind(null, onSave);
     }
 
     public toggleGrid(): void {
-        this.gridEnabled = !this.gridEnabled;
-        sendMessage(this.gridEnabled).then(() => this.notifyControl());
-        localSettings.update("gridEnabled", this.gridEnabled);
+        localSettings.update("gridEnabled", !this.gridStatus);
+        sendMessage(this.gridStatus).then();
     }
 
     /**
@@ -164,7 +190,7 @@ export class EditorActions {
              * (they obviously aren't), automatically expand range
              */
             forceMoveMarkers: true,
-            identifier: {major: 1, minor: 1},
+            identifier: { major: 1, minor: 1 },
             range: new monaco.Range(endLine + 1, endCharacter, endLine + 1, endCharacter),
             text
         };
@@ -179,7 +205,7 @@ export class EditorActions {
     public setTabSize(tabSize: number): void {
         tabSize = tabSize || DEFAULT_TAB_SIZE;
         if (this.chartsEditor) {
-            this.chartsEditor.getModel().updateOptions({tabSize});
+            this.chartsEditor.getModel().updateOptions({ tabSize });
         }
     }
 
@@ -224,6 +250,11 @@ export class EditorActions {
         }
     }
 
+    /**
+     * Subscribe toggleGrid Button to event
+     * @param button — control button
+     * @param action - button callback
+     */
     public subscribeControl(button: HTMLElement, action: () => void): void {
         this.subscribers.push({
             Action: action,
@@ -231,9 +262,12 @@ export class EditorActions {
         });
     }
 
-    private notifyControl(): void {
-        for (let {Subject, Action} of this.subscribers) {
-            const func = Action.bind(Subject, this.gridEnabled);
+    /**
+     * Notify each subscriber about specific event
+     */
+    private notifyControl(event: MessageEvent): void {
+        for (let { Subject, Action } of this.subscribers) {
+            const func = Action.bind(Subject, event.data.value);
             func();
         }
     }
@@ -280,7 +314,6 @@ export class EditorActions {
 }
 
 function sendMessage(value: boolean = false) {
-    const gridButton = document.getElementById("gridBtn");
     return new Promise((resolve, reject) => {
         let stopped = false;
 
@@ -291,11 +324,8 @@ function sendMessage(value: boolean = false) {
 
         const connected = function ok(event: MessageEvent) {
             stopped = true;
-            if (event.data.type === "axiToggleGridResponse") {
-                gridButton.classList.toggle("active", event.data.value);
-            }
             window.removeEventListener("message", ok);
-            resolve();
+            resolve(event);
         };
 
         window.addEventListener("message", connected);
@@ -350,6 +380,17 @@ const localSettings = {
         }
 
         return null;
+    },
+
+    delete(name: string) {
+        try {
+            const settings = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY));
+
+            delete settings[name];
+            localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+        } catch (e) {
+            console.warn("Couldn't delete item " + name + " from editor's settings:", e.message);
+        }
     }
 };
 
@@ -364,8 +405,4 @@ window.addEventListener("keydown", (event) => {
         event.preventDefault();
         event.stopPropagation();
     }
-});
-
-document.getElementById("portal").addEventListener("load", () => {
-    const gridEnabled = localSettings.get("gridEnabled") || false;
 });
