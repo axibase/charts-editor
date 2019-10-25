@@ -161,8 +161,9 @@ export class EditorActions {
     }
 
     public toggleGrid(): void {
-        localSettings.update("gridEnabled", !this.gridStatus);
-        sendMessage(this.gridStatus).then();
+        const newStatus = !this.gridStatus;
+        localSettings.update("gridEnabled", newStatus);
+        sendMessage(newStatus);
     }
 
     /**
