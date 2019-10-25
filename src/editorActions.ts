@@ -78,15 +78,13 @@ export class EditorActions {
         const tabSize = options.tabSize || DEFAULT_TAB_SIZE;
 
         if (!options.iframe) {
-            console.error("You forgot to pass link to iframe element");
-            return;
+            console.warn("You forgot to pass link to iframe element");
         } else {
             this.iframeElement = options.iframe;
+            this.iframeElement.addEventListener("load", () => {
+                sendMessage(this.iframeElement, this.gridStatus);
+            });
         }
-
-        this.iframeElement.addEventListener("load", () => {
-            sendMessage(this.iframeElement, this.gridStatus);
-        });
 
         window.addEventListener("message", (event: MessageEvent) => this.notifyControl(event));
 
@@ -162,7 +160,7 @@ export class EditorActions {
         this.chartsEditor.getModel().onDidChangeContent(() => {
             onChange();
             this.configHasChanges = true;
-            if (this.gridStatus) {
+            if (this.gridStatus && this.iframeElement) {
                 this.iframeElement.contentWindow.postMessage({
                     type: "axiToggleGrid",
                     value: true
@@ -331,6 +329,10 @@ export class EditorActions {
 }
 
 function sendMessage(iframe: HTMLIFrameElement, value: boolean = false) {
+    if (!iframe) {
+        return null;
+    }
+
     return new Promise((resolve, reject) => {
         let stopped = false;
 
