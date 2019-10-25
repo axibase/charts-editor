@@ -10,6 +10,7 @@ export interface EditorOptions {
     tabSize?: number;
     onChange?: () => {};
     onSave?: () => {};
+    iframe?: HTMLIFrameElement;
 }
 
 interface Subscriber {
@@ -37,6 +38,7 @@ export class EditorActions {
     private configHasChanges: boolean = false;
     private gridControlEnabled: boolean | null = null;
     private configGridSetting: boolean | null = null;
+    private iframeElement: HTMLIFrameElement = null;
 
     /**
      * Determine grid display status
@@ -75,8 +77,15 @@ export class EditorActions {
         const fontSize = options.fontSize || 12;
         const tabSize = options.tabSize || DEFAULT_TAB_SIZE;
 
-        document.getElementById("portal").addEventListener("load", () => {
-            sendMessage(this.gridStatus);
+        if (!options.iframe) {
+            console.error("You forgot to pass link to iframe element");
+            return;
+        } else {
+            this.iframeElement = options.iframe;
+        }
+
+        this.iframeElement.addEventListener("load", () => {
+            sendMessage(this.iframeElement, this.gridStatus);
         });
 
         window.addEventListener("message", (event: MessageEvent) => this.notifyControl(event));
@@ -105,7 +114,7 @@ export class EditorActions {
         const editorHolder = document.getElementById(editorId);
 
         if (!editorHolder) {
-            console.log("Editor holder with id «" + editorId + "» not found");
+            console.error("Editor holder with id «" + editorId + "» not found");
             return;
         }
 
@@ -154,7 +163,7 @@ export class EditorActions {
             onChange();
             this.configHasChanges = true;
             if (this.gridStatus) {
-                (document.getElementById("portal") as HTMLIFrameElement).contentWindow.postMessage({
+                this.iframeElement.contentWindow.postMessage({
                     type: "axiToggleGrid",
                     value: true
                 }, "*");
@@ -170,7 +179,7 @@ export class EditorActions {
         } else {
             this.gridControlEnabled = !this.gridControlEnabled;
         }
-        sendMessage(this.gridStatus);
+        sendMessage(this.iframeElement, this.gridStatus);
     }
 
     /**
@@ -321,7 +330,7 @@ export class EditorActions {
     }
 }
 
-function sendMessage(value: boolean = false) {
+function sendMessage(iframe: HTMLIFrameElement, value: boolean = false) {
     return new Promise((resolve, reject) => {
         let stopped = false;
 
@@ -340,7 +349,7 @@ function sendMessage(value: boolean = false) {
 
         const ping = function run() {
             if (!stopped) {
-                (document.getElementById("portal") as HTMLIFrameElement).contentWindow.postMessage({
+                iframe.contentWindow.postMessage({
                     type: "axiToggleGrid",
                     value
                 }, "*");
