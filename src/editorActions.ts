@@ -34,6 +34,9 @@ export class EditorActions {
 
     public chartsEditor: editor.ICodeEditor;
     private subscribers: Subscriber[] = [];
+    private configHasChanges: boolean = false;
+    private gridControlEnabled: boolean | null = null;
+    private configGridSetting: boolean | null = null;
 
     /**
      * Determine grid display status
@@ -42,13 +45,20 @@ export class EditorActions {
      */
     get gridStatus(): boolean {
         const match = /grid-display\s*=\s*(true|false)/gm.exec(this.getEditorValue());
-        let explicitValue = false;
 
         if (match) {
-            explicitValue = match[1] === "true";
+            this.configGridSetting = match[1] === "true";
+        } else {
+            this.configGridSetting = null;
         }
 
-        return localSettings.get("gridEnabled") || explicitValue;
+        if (this.gridControlEnabled !== null) {
+            return this.gridControlEnabled;
+        } else if (this.configGridSetting !== null) {
+            return this.configGridSetting;
+        } else {
+            return this.configHasChanges;
+        }
     }
 
     public initEditor(options: EditorOptions): void {
@@ -84,11 +94,6 @@ export class EditorActions {
         const onSave = (
             options.onSave instanceof Function
         ) ? options.onSave : FN_NOOP;
-
-        /**
-         * On page reload clear grid-display setting
-         */
-        localSettings.delete("gridEnabled");
 
         /**
          * Write editor's settings to localStorage
@@ -147,9 +152,8 @@ export class EditorActions {
          */
         this.chartsEditor.getModel().onDidChangeContent(() => {
             onChange();
-            if (localSettings.get("gridEnabled") !== false && !/grid-display\s*=\s*false/.test(
-                this.getEditorValue()
-            )) {
+            this.configHasChanges = true;
+            if (this.gridStatus) {
                 (document.getElementById("portal") as HTMLIFrameElement).contentWindow.postMessage({
                     type: "axiToggleGrid",
                     value: true
@@ -161,9 +165,12 @@ export class EditorActions {
     }
 
     public toggleGrid(): void {
-        const newStatus = !this.gridStatus;
-        localSettings.update("gridEnabled", newStatus);
-        sendMessage(newStatus);
+        if (this.gridControlEnabled === null) {
+            this.gridControlEnabled = !this.gridStatus;
+        } else {
+            this.gridControlEnabled = !this.gridControlEnabled;
+        }
+        sendMessage(this.gridStatus);
     }
 
     /**
@@ -381,17 +388,6 @@ const localSettings = {
         }
 
         return null;
-    },
-
-    delete(name: string) {
-        try {
-            const settings = JSON.parse(localStorage.getItem(SETTINGS_STORAGE_KEY));
-
-            delete settings[name];
-            localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
-        } catch (e) {
-            console.warn("Couldn't delete item " + name + " from editor's settings:", e.message);
-        }
     }
 };
 
