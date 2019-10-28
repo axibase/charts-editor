@@ -15,53 +15,97 @@ export interface EditorOptions {
 
 interface Subscriber {
     Subject: HTMLElement;
-    Action: () => void;
+    Action: Callback;
+}
+
+type Callback = (value?: boolean) => void;
+
+class GridStatus {
+    private codeChanges: boolean = false;
+    private manualEnable: boolean | null = null;
+    private configSetting: boolean | null = null;
+    private _value: boolean = false;
+    private callbacks: Callback[] = [];
+
+    constructor(setting: boolean | null, callbacks: Callback[]) {
+        this.configSetting = setting;
+        this.callbacks = callbacks;
+    }
+
+    public setCodeChange(value: boolean): void {
+        this.codeChanges = value;
+        this.update();
+    }
+
+    public setConfigSetting(value: boolean | null): void {
+        this.configSetting = value;
+        this.update();
+    }
+
+    public toggleManualEnable(): void {
+        if (this.manualEnable === null) {
+            this.manualEnable = !this._value;
+        } else {
+            this.manualEnable = !this.manualEnable;
+        }
+        this.update();
+    }
+
+    /**
+     * Provides possibility of adding grid value change callbacks dynamically
+     * Not used now
+     */
+    public addCallback(func: Callback): void {
+        this.callbacks.push(func);
+    }
+
+    get value(): boolean {
+        return this._value;
+    }
+
+    private update(): void {
+        const newValue = this.getGridStatus();
+        if (this._value !== newValue) {
+            this._value = newValue;
+            this.callbacks.forEach(func => func(this._value));
+        }
+    }
+
+    private getGridStatus(): boolean {
+        let result = null;
+
+        if (this.manualEnable !== null) {
+            result = this.manualEnable;
+        } else if (this.configSetting !== null) {
+            result = this.configSetting;
+        } else {
+            result = this.codeChanges;
+        }
+
+        return result;
+    }
 }
 
 // tslint:disable-next-line: no-empty
 const FN_NOOP = () => { };
 const SETTINGS_STORAGE_KEY = "ChartsEditorSettings";
+const POSTMESSAGE_REQUEST_KEY = "axiToggleGrid";
 const DEFAULT_TAB_SIZE: number = 2;
 
+// tslint:disable-next-line: max-classes-per-file
 export class EditorActions {
     /**
      * Some actions not connected with editor instance which should be performed on save
      * @param onSave
      */
-    // tslint:disable-next-line: ban-types
-    public static saveEditorContents(onSave: Function = FN_NOOP) {
+    public static saveEditorContents(onSave: Callback = FN_NOOP) {
         onSave();
     }
 
     public chartsEditor: editor.ICodeEditor;
     private subscribers: Subscriber[] = [];
-    private configHasChanges: boolean = false;
-    private gridControlEnabled: boolean | null = null;
-    private configGridSetting: boolean | null = null;
     private iframeElement: HTMLIFrameElement = null;
-
-    /**
-     * Determine grid display status
-     * 1) Is grid-display set explicitly to true|false?
-     * 2) Is grid control pressed? (value is kept in localStorage)
-     */
-    get gridStatus(): boolean {
-        const match = /grid-display\s*=\s*(true|false)/gm.exec(this.getEditorValue());
-
-        if (match) {
-            this.configGridSetting = match[1] === "true";
-        } else {
-            this.configGridSetting = null;
-        }
-
-        if (this.gridControlEnabled !== null) {
-            return this.gridControlEnabled;
-        } else if (this.configGridSetting !== null) {
-            return this.configGridSetting;
-        } else {
-            return this.configHasChanges;
-        }
-    }
+    private grid: GridStatus;
 
     public initEditor(options: EditorOptions): void {
         /** Editor is already initialized */
@@ -77,12 +121,10 @@ export class EditorActions {
         const fontSize = options.fontSize || 12;
         const tabSize = options.tabSize || DEFAULT_TAB_SIZE;
 
-        if (!options.iframe) {
-            console.warn("You forgot to pass link to iframe element");
-        } else {
+        if (options.iframe) {
             this.iframeElement = options.iframe;
             this.iframeElement.addEventListener("load", () => {
-                sendMessage(this.iframeElement, this.gridStatus);
+                sendMessage(this.iframeElement, this.grid.value);
             });
         }
 
@@ -159,25 +201,36 @@ export class EditorActions {
          */
         this.chartsEditor.getModel().onDidChangeContent(() => {
             onChange();
-            this.configHasChanges = true;
-            if (this.gridStatus && this.iframeElement) {
-                this.iframeElement.contentWindow.postMessage({
-                    type: "axiToggleGrid",
-                    value: true
-                }, "*");
-            }
+            this.grid.setCodeChange(true);
+            this.grid.setConfigSetting(
+                this.getGridConfigSetting(
+                    this.getEditorValue()
+                )
+            );
         });
 
         EditorActions.saveEditorContents.bind(null, onSave);
+        this.grid = new GridStatus(
+            this.getGridConfigSetting(
+                this.getEditorValue()
+            ),
+            this.iframeElement ? [
+                (val: boolean) => {
+                    this.iframeElement.contentWindow.postMessage({
+                        type: POSTMESSAGE_REQUEST_KEY,
+                        value: val
+                    }, "*");
+                }
+            ] : []
+        );
     }
 
+    /**
+     * Toggle grid visibility via control button (has highest priority in the runtime)
+     */
     public toggleGrid(): void {
-        if (this.gridControlEnabled === null) {
-            this.gridControlEnabled = !this.gridStatus;
-        } else {
-            this.gridControlEnabled = !this.gridControlEnabled;
-        }
-        sendMessage(this.iframeElement, this.gridStatus);
+        this.grid.toggleManualEnable();
+        sendMessage(this.iframeElement, this.grid.value);
     }
 
     /**
@@ -222,6 +275,11 @@ export class EditorActions {
         if (this.chartsEditor) {
             this.chartsEditor.getModel().updateOptions({ tabSize });
         }
+    }
+
+    public getGridConfigSetting(text: string) {
+        const match = /grid-display\s*=\s*(true|false)/gm.exec(text);
+        return match ? match[1] === "true" : null;
     }
 
     /**
@@ -282,8 +340,7 @@ export class EditorActions {
      */
     private notifyControl(event: MessageEvent): void {
         for (let { Subject, Action } of this.subscribers) {
-            const func = Action.bind(Subject, event.data.value);
-            func();
+            Action.call(Subject, event.data.value);
         }
     }
 
@@ -328,6 +385,9 @@ export class EditorActions {
     }
 }
 
+/**
+ * Send message to portal iframe
+ */
 function sendMessage(iframe: HTMLIFrameElement, value: boolean = false) {
     if (!iframe) {
         return null;
@@ -352,7 +412,7 @@ function sendMessage(iframe: HTMLIFrameElement, value: boolean = false) {
         const ping = function run() {
             if (!stopped) {
                 iframe.contentWindow.postMessage({
-                    type: "axiToggleGrid",
+                    type: POSTMESSAGE_REQUEST_KEY,
                     value
                 }, "*");
                 setTimeout(run, 50);
