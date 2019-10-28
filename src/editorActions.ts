@@ -124,11 +124,11 @@ export class EditorActions {
         if (options.iframe) {
             this.iframeElement = options.iframe;
             this.iframeElement.addEventListener("load", () => {
-                sendMessage(this.iframeElement, this.grid.value);
+                sendStatusOnConnect(this.iframeElement, this.grid.value);
             });
         }
 
-        window.addEventListener("message", (event: MessageEvent) => this.notifyControl(event));
+        window.addEventListener("message", (event: MessageEvent) => this.notifyAboutGridChanges(event));
 
         /**
          * Editor onchange (type, paste text) callback
@@ -230,7 +230,6 @@ export class EditorActions {
      */
     public toggleGrid(): void {
         this.grid.toggleManualEnable();
-        sendMessage(this.iframeElement, this.grid.value);
     }
 
     /**
@@ -278,7 +277,7 @@ export class EditorActions {
     }
 
     public getGridConfigSetting(text: string) {
-        const match = /grid-display\s*=\s*(true|false)/gm.exec(text);
+        const match = /^[\s]*grid-display\s*=\s*(true|false)[\s]*$/gm.exec(text);
         return match ? match[1] === "true" : null;
     }
 
@@ -328,7 +327,7 @@ export class EditorActions {
      * @param button — control button
      * @param action - button callback
      */
-    public subscribeControl(button: HTMLElement, action: () => void): void {
+    public subscribeToGridChanges(button: HTMLElement, action: () => void): void {
         this.subscribers.push({
             Action: action,
             Subject: button
@@ -338,7 +337,7 @@ export class EditorActions {
     /**
      * Notify each subscriber about specific event
      */
-    private notifyControl(event: MessageEvent): void {
+    private notifyAboutGridChanges(event: MessageEvent): void {
         for (let { Subject, Action } of this.subscribers) {
             Action.call(Subject, event.data.value);
         }
@@ -388,7 +387,7 @@ export class EditorActions {
 /**
  * Send message to portal iframe
  */
-function sendMessage(iframe: HTMLIFrameElement, value: boolean = false) {
+function sendStatusOnConnect(iframe: HTMLIFrameElement, value: boolean = false) {
     if (!iframe) {
         return null;
     }
