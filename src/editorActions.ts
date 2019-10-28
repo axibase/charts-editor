@@ -27,11 +27,6 @@ class GridStatus {
     private _value: boolean = false;
     private callbacks: Callback[] = [];
 
-    constructor(setting: boolean | null, callbacks: Callback[]) {
-        this.configSetting = setting;
-        this.callbacks = callbacks;
-    }
-
     public setCodeChange(value: boolean): void {
         this.codeChanges = value;
         this.update();
@@ -51,10 +46,6 @@ class GridStatus {
         this.update();
     }
 
-    /**
-     * Provides possibility of adding grid value change callbacks dynamically
-     * Not used now
-     */
     public addCallback(func: Callback): void {
         this.callbacks.push(func);
     }
@@ -210,19 +201,17 @@ export class EditorActions {
         });
 
         EditorActions.saveEditorContents.bind(null, onSave);
-        this.grid = new GridStatus(
-            this.getGridConfigSetting(
-                this.getEditorValue()
-            ),
-            this.iframeElement ? [
-                (val: boolean) => {
-                    this.iframeElement.contentWindow.postMessage({
-                        type: POSTMESSAGE_REQUEST_KEY,
-                        value: val
-                    }, "*");
-                }
-            ] : []
-        );
+        this.grid = new GridStatus();
+
+        this.grid.setConfigSetting(this.getGridConfigSetting(this.getEditorValue()));
+        if (this.iframeElement) {
+            this.grid.addCallback((val: boolean) => {
+                this.iframeElement.contentWindow.postMessage({
+                    type: POSTMESSAGE_REQUEST_KEY,
+                    value: val
+                }, "*");
+            });
+        }
     }
 
     /**
