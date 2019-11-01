@@ -89,9 +89,7 @@ export class EditorActions {
      * Some actions not connected with editor instance which should be performed on save
      * @param onSave
      */
-    public static saveEditorContents(onSave: Callback = FN_NOOP) {
-        onSave();
-    }
+    public static saveEditorContents: Callback;
 
     public chartsEditor: editor.ICodeEditor;
     private subscribers: Subscriber[] = [];
@@ -200,7 +198,7 @@ export class EditorActions {
             );
         });
 
-        EditorActions.saveEditorContents.bind(null, onSave);
+        EditorActions.saveEditorContents = onSave;
         this.grid = new GridStatus();
 
         this.grid.setConfigSetting(this.getGridConfigSetting(this.getEditorValue()));
