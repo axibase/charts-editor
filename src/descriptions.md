@@ -498,6 +498,18 @@ Integration parameter `d`, a number of `0` or `1`.
   
 Auto-regression parameter `p`.  
   
+## forecastbaselinecount  
+  
+Number of previous windows, excluding the last window, used in baseline calculation.  
+  
+## forecastbaselinefunction  
+  
+Statistical function used to filter values when calculating baseline.  
+  
+## forecastbaselineperiod  
+  
+The distance between the previous windows used in baseline calculation.  
+  
 ## forecasthorizoninterval  
   
 Generate a forecast for the specified interval into the future starting with last sample of the loaded series.
@@ -673,6 +685,10 @@ Specify the number of gradient colors between each color in Color Range.
 ## gradientintensity  
   
 Color intensity of the first and the last sector in each range.  
+  
+## griddisplay  
+  
+Show grid displaying how many widgets can be in group.  
   
 ## groupfirst  
   
@@ -1155,6 +1171,10 @@ Specifies an action to be performed when the user selects a series. For a Calend
 ## onseriesdoubleclick  
   
 Disable [double click functionality](https://axibase.com/docs/charts/widgets/pie-chart/#on-series-double-click) in the widget.  
+  
+## ontitleclick  
+  
+Action, executed on title click.  
   
 ## options  
   

@@ -2298,6 +2298,44 @@
             ]
         },
         {
+            "displayName": "forecast-baseline-count",
+            "type": "integer",
+            "example": "3",
+            "minValue": 0,
+            "section": "series",
+            "widget": "chart",
+            "excludes": [
+                "forecast-baseline-period"
+            ]
+        },
+        {
+            "displayName": "forecast-baseline-function",
+            "type": "enum",
+            "example": "avg",
+            "section": "series",
+            "widget": "chart",
+            "enum": [
+                "count",
+                "min",
+                "max",
+                "sum",
+                "avg",
+                "percentile\\((\\d{1,2}(\\.\\d)?|100)\\)",
+                "median",
+                "standard_deviation"
+            ]
+        },
+        {
+            "displayName": "forecast-baseline-period",
+            "type": "interval",
+            "example": "1 week",
+            "section": "series",
+            "widget": "chart",
+            "excludes": [
+                "forecast-baseline-count"
+            ]
+        },
+        {
             "displayName": "forecast-horizon-interval",
             "type": "interval",
             "example": "3 day",
@@ -2950,6 +2988,13 @@
             "widget": "gauge"
         },
         {
+            "displayName": "grid-display",
+            "type": "boolean",
+            "example": true,
+            "section": "configuration",
+            "defaultValue": false
+        },
+        {
             "displayName": "group",
             "section": "widget",
             "widget": "bar",
@@ -3044,7 +3089,13 @@
             "type": "number",
             "minValue": 0,
             "example": 2,
-            "section": "widget"
+            "section": "widget",
+            "defaultValue": 1,
+            "override": {
+                "[section == 'configuration']": {
+                    "defaultValue": 4
+                }
+            }
         },
         {
             "displayName": "hidden",
@@ -3251,7 +3302,7 @@
             "displayName": "icon-position",
             "type": "enum",
             "example": "bottom",
-            "section": "widget",
+            "section": "series",
             "widget": "text",
             "enum": [
                 "bottom",
@@ -3325,7 +3376,7 @@
             "enum": [
                 "LINEAR",
                 "AUTO",
-                "PREVIOS"
+                "PREVIOUS"
             ]
         },
         {
@@ -5420,6 +5471,30 @@
             }
         },
         {
+            "displayName": "on-title-click",
+            "section": "widget",
+            "type": "string",
+            "example": "widget.reload()",
+            "defaultValue": "next()",
+            "script": {
+                "returnValue": "void",
+                "fields": [
+                    {
+                        "name": "widget",
+                        "type": "object"
+                    },
+                    {
+                        "name": "config",
+                        "type": "object"
+                    },
+                    {
+                        "name": "next",
+                        "type": "function"
+                    }
+                ]
+            }
+        },
+        {
             "displayName": "options",
             "multiLine": true,
             "section": "dropdown",
@@ -5811,7 +5886,8 @@
             "type": "string",
             "example": "cpu_busy_prod",
             "widget": "console",
-            "section": "widget"
+            "section": "widget",
+            "multiLine": true
         },
         {
             "displayName": "scale",
@@ -7225,7 +7301,7 @@
         },
         {
             "displayName": "stack",
-            "widget": "bar",
+            "widget": ["chart", "bar"],
             "type": "boolean",
             "section": "widget",
             "example": false,
@@ -8314,6 +8390,7 @@
             "example": "aggregate, interpolate",
             "enum": [
                 "none",
+                "evaluate",
                 "interpolate",
                 "group",
                 "rate",
@@ -8824,7 +8901,13 @@
             "type": "number",
             "example": 2,
             "minValue": 0,
-            "section": "widget"
+            "section": "widget",
+            "defaultValue": 1,
+            "override": {
+                "[section == 'configuration']": {
+                    "defaultValue": 6
+                }
+            }
         },
         {
             "displayName": "zoom-svg",

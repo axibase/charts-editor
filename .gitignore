@@ -17,3 +17,4 @@ node_modules/
 
 # Monaco core
 monaco-editor-core/*
+.idea
