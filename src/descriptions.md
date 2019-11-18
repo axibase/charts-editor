@@ -664,9 +664,13 @@ Counter format.
   
 Disable column name formatting.  
   
-## parsenumbers  
+## panelsperiod  
   
-If `true`, column values are processed as numbers.
+Comma-separated list of aggregation periods to be used instead of default ones in `summarize-period` panel. 
+  
+## parsenumbers  
+    
+If `true`, column values are processed as numbers.  
   
 ## formatsize  
   
@@ -1221,7 +1225,7 @@ Define the location of the final value pointer.
   
 ## position  
   
-Position of the column relative to other columns in the table.  
+Defines cells on the grid where widget will be located.  
   
 ## primarykey  
   
