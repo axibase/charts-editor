@@ -1145,6 +1145,10 @@ Threshold for time series tied to vertices.
 Supports JavaScript, `percentile` functions, or can be set as an array.  
   
 ## nodevalue  
+   
+## nullcolumns  
+  
+Comma separated list of column keys to be hidden.  
   
 ## offset  
   
