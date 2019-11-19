@@ -17,6 +17,7 @@
         },
         {
             "displayName": "alert-expression",
+            "multiLine": true,
             "type": "string",
             "section": [
                 "column",
@@ -5305,6 +5306,14 @@
                     }
                 ]
             }
+        },
+        {
+            "displayName": "null-columns",
+            "type": "string",
+            "widget": ["console", "property", "table"],
+            "section": "widget",
+            "multiple": true,
+            "example": "entity, time"
         },
         {
             "displayName": "offset",
