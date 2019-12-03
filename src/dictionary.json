@@ -17,6 +17,7 @@
         },
         {
             "displayName": "alert-expression",
+            "multiLine": true,
             "type": "string",
             "section": [
                 "column",
@@ -1517,7 +1518,8 @@
                 "true",
                 "false",
                 "hover"
-            ]
+            ],
+            "widget": ["chart", "calendar"]
         },
         {
             "displayName": "display-tags",
@@ -2171,6 +2173,7 @@
             "defaultValue": "compact",
             "enum": [],
             "section": "widget",
+            "widget": ["chart", "calendar"],
             "override": {
                 "[widget == 'chart']": {
                     "enum": [
@@ -2192,6 +2195,13 @@
                         "compact",
                         "false",
                         "none"
+                    ]
+                },
+                "[widget == 'calendar']": {
+                    "enum": [
+                        "true",
+                        "false",
+                        "compact"
                     ]
                 }
             }
@@ -5298,6 +5308,14 @@
             }
         },
         {
+            "displayName": "null-columns",
+            "type": "string",
+            "widget": ["console", "property", "table"],
+            "section": "widget",
+            "multiple": true,
+            "example": "entity, time"
+        },
+        {
             "displayName": "offset",
             "type": "integer",
             "widget": "property",
@@ -5516,6 +5534,14 @@
             "defaultValue": false
         },
         {
+            "displayName": "panels-period",
+            "section": "widget",
+            "type": "interval",
+            "multiple": true,
+            "example": "1 hour, 1 day, 1 week",
+            "widget": "calendar"
+        },
+        {
             "displayName": "parent",
             "widget": "graph",
             "section": "node",
@@ -5566,9 +5592,11 @@
         },
         {
             "displayName": "periods",
-            "section": "configuration",
-            "type": "string",
-            "example": "20 minute, 4 hour"
+            "section": "widget",
+            "type": "interval",
+            "multiple": true,
+            "example": "20 minute, 4 hour",
+            "widget": ["chart", "calendar"]
         },
         {
             "displayName": "pin-radius",
@@ -5589,9 +5617,9 @@
         },
         {
             "displayName": "position",
-            "section": "column",
+            "section": "widget",
             "type": "string",
-            "example": "first"
+            "example": "1-1, 2-2"
         },
         {
             "displayName": "primary-key",

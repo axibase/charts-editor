@@ -385,11 +385,10 @@ Hide series in the widget legend based on expression or boolean statement.
   
 ## endtime  
   
-Specifies the date and time in local or [ISO format](https://axibase.com/docs/atsd/shared/date-format.html) until which the values for the series are loaded.  
+End of time interval, specified as [Date Expression](https://axibase.com/docs/charts/syntax/date-expressions.md), until which the values for the series are loaded.  
 The setting can be overridden by each widget separately.  
 Note that `start-time` is **inclusive** and `end-time` is **exclusive**.  
-This means that `start-time = 2017-09-14 10:00:00` includes data points that occurred exactly at `10:00:00` and later whereas `end-time = 2017-09-14 11:00:00` includes data points that occurred up to `10:59:59`, excluding points that occurred at `11:00:00`.  
-The setting supports [calendar](https://axibase.com/docs/atsd/shared/calendar.html) keywords.  
+This means that `start-time = 2017-09-14 10:00:00` includes data points that occurred exactly at `10:00:00` and later whereas `end-time = 2017-09-14 11:00:00` includes data points that occurred up to `10:59:59`, excluding points that occurred at `11:00:00`. 
   
 ## endworkingminutes  
   
@@ -664,9 +663,13 @@ Counter format.
   
 Disable column name formatting.  
   
-## parsenumbers  
+## panelsperiod  
   
-If `true`, column values are processed as numbers.
+Comma-separated list of aggregation periods to be used instead of default ones in `summarize-period` panel. 
+  
+## parsenumbers  
+    
+If `true`, column values are processed as numbers.  
   
 ## formatsize  
   
@@ -960,7 +963,7 @@ Font size cannot scale above set size.
   
 ## maxinserttime  
   
-Include series if the timestamp of the latest sample is less than `max-insert-time`, specified as [ISO date](https://axibase.com/docs/atsd/shared/date-format.html), local date, or [calendar expression](https://axibase.com/docs/atsd/shared/calendar.html).  
+Include series if the timestamp of the latest sample is less than `max-insert-time`, specified as [Date Expression](https://axibase.com/docs/charts/syntax/date-expressions.md).  
   
 ## maxrange  
   
@@ -1032,7 +1035,7 @@ Font size cannot scale below set size.
   
 ## mininserttime  
   
-Include series if the timestamp of the latest sample is equal or greater than `min-insert-time`, specified as [ISO date](https://axibase.com/docs/atsd/shared/date-format.html), local date, or [calendar expression](https://axibase.com/docs/atsd/shared/calendar.html).  
+Include series if the timestamp of the latest sample is equal or greater than `min-insert-time`, specified as [Date Expression](https://axibase.com/docs/charts/syntax/date-expressions.md).  
   
 ## minorticks  
   
@@ -1141,6 +1144,10 @@ Threshold for time series tied to vertices.
 Supports JavaScript, `percentile` functions, or can be set as an array.  
   
 ## nodevalue  
+   
+## nullcolumns  
+  
+Comma separated list of column keys to be hidden.  
   
 ## offset  
   
@@ -1221,7 +1228,7 @@ Define the location of the final value pointer.
   
 ## position  
   
-Position of the column relative to other columns in the table.  
+Defines cells on the grid where widget will be located.  
   
 ## primarykey  
   
@@ -1427,11 +1434,10 @@ Disable series grouping to display each series in a separate column.
   
 ## starttime  
   
-Specifies the date and time in local or [ISO format](https://axibase.com/docs/atsd/shared/date-format.html) from which the values for the series are loaded.  
+Start of the time interval, specified as [Date Expression](https://axibase.com/docs/charts/syntax/date-expressions.md), from which the values for the series are loaded.
 The setting can be overridden by each widget separately.  
 Note that `start-time` is **inclusive** and `end-time` is **exclusive**.  
-This means that `start-time = 2017-09-14 10:00:00` includes data points that occurred exactly at `10:00:00` and later whereas `end-time = 2017-09-14 11:00:00` includes data points that occurred up to `10:59:59`, excluding points that occurred at `11:00:00`.  
-The setting supports [calendar](https://axibase.com/docs/atsd/shared/calendar.html) keywords.  
+This means that `start-time = 2017-09-14 10:00:00` includes data points that occurred exactly at `10:00:00` and later whereas `end-time = 2017-09-14 11:00:00` includes data points that occurred up to `10:59:59`, excluding points that occurred at `11:00:00`.
   
 ## startworkingminutes  
   
