@@ -1,5 +1,24 @@
 import { editor } from "monaco-editor-core";
 
+
+function debounce<T extends Function>(func: T, delay = 50): T {
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+  
+    return function(this: any, ...args: any[]) {
+        const context = this;
+    
+        const doLater = function() {
+            timeout = undefined;
+            func.apply(context, args);
+        }
+        if (timeout !== undefined) {
+            clearTimeout(timeout);
+        }
+    
+        timeout = setTimeout(doLater, delay);
+    } as any
+}
+
 export interface EditorOptions {
     editorId?: string;
     language?: string;
@@ -10,6 +29,7 @@ export interface EditorOptions {
     tabSize?: number;
     onChange?: () => {};
     onSave?: () => {};
+    onAlert?: (alert: string) => void;
     iframe?: HTMLIFrameElement;
 }
 
@@ -17,6 +37,47 @@ interface Subscriber {
     Subject: HTMLElement;
     Action: Callback;
 }
+
+interface PortalCommunication {
+    request: string;
+    response: string;
+}
+
+/**
+ * postMessage request-response messages dictionary
+ */
+const REQUESTS_DICTIONARY: Map<string, PortalCommunication> = new Map([
+    [
+        "toggleGrid", {
+            request: "axiToggleGrid",
+            response: "axiToggleGridResponse"
+        }
+    ],
+    [
+        "resizeWidget", {
+            request: "axiWidgetResize",
+            response: "axiWidgetResizeResponse"
+        }
+    ],
+    [
+        "dragWidget", {
+            request: "axiWidgetDrag",
+            response: "axiWidgetDragResponse"
+        }
+    ],
+    [
+        "insertConfigRows", {
+            request: "axiInsertConfigRows",
+            response: "axiInsertConfigRowsResponse"
+        }
+    ],
+    [
+        "lockInteractions", {
+            request: "axiLockInteractions",
+            response: "axiLockInteractionsResponse"
+        }
+    ]
+]);
 
 type Callback = (value?: boolean) => void;
 
@@ -80,7 +141,6 @@ class GridStatus {
 // tslint:disable-next-line: no-empty
 const FN_NOOP = () => { };
 const SETTINGS_STORAGE_KEY = "ChartsEditorSettings";
-const POSTMESSAGE_REQUEST_KEY = "axiToggleGrid";
 const DEFAULT_TAB_SIZE: number = 2;
 
 // tslint:disable-next-line: max-classes-per-file
@@ -95,6 +155,20 @@ export class EditorActions {
     private subscribers: Subscriber[] = [];
     private iframeElement: HTMLIFrameElement = null;
     private grid: GridStatus;
+
+    private updateWidth: (group: number, widget: number, line: number, dimension: {
+        name: string, value: number
+    }) => void = debounce(this.changeValueSetting, 50);
+
+    /**
+     * Can be used for config properties update with debounce
+     */
+    private updateHeight: (group: number, widget: number, line: number, dimension: {
+        name: string, value: number
+    }) => void = debounce(this.changeValueSetting, 50);
+    private _preventLock: boolean = false;
+
+    private alert: (msg: string) => void = () => {};
 
     public initEditor(options: EditorOptions): void {
         /** Editor is already initialized */
@@ -117,7 +191,7 @@ export class EditorActions {
             });
         }
 
-        window.addEventListener("message", (event: MessageEvent) => this.notifyAboutGridChanges(event));
+        window.addEventListener("message", (event: MessageEvent) => this.notifyAboutChanges(event));
 
         /**
          * Editor onchange (type, paste text) callback
@@ -133,6 +207,7 @@ export class EditorActions {
             options.onSave instanceof Function
         ) ? options.onSave : FN_NOOP;
 
+        
         /**
          * Write editor's settings to localStorage
          */
@@ -196,6 +271,11 @@ export class EditorActions {
                     this.getEditorValue()
                 )
             );
+            if (!this._preventLock) {
+                this.lockInteractions();
+            } else {
+                this._preventLock = false;
+            }
         });
 
         EditorActions.saveEditorContents = onSave;
@@ -205,10 +285,14 @@ export class EditorActions {
         if (this.iframeElement) {
             this.grid.addCallback((val: boolean) => {
                 this.iframeElement.contentWindow.postMessage({
-                    type: POSTMESSAGE_REQUEST_KEY,
+                    type: REQUESTS_DICTIONARY.get("toggleGrid").request,
                     value: val
                 }, "*");
             });
+        }
+
+        if (options.onAlert) {
+            this.alert = options.onAlert;
         }
     }
 
@@ -324,12 +408,149 @@ export class EditorActions {
     /**
      * Notify each subscriber about specific event
      */
-    private notifyAboutGridChanges(event: MessageEvent): void {
-        for (let { Subject, Action } of this.subscribers) {
-            Action.call(Subject, event.data.value);
+    private notifyAboutChanges(event: MessageEvent): void {
+        switch (event.data.type) {
+            case REQUESTS_DICTIONARY.get("toggleGrid").response: {
+                for (let { Subject, Action } of this.subscribers) {
+                    Action.call(Subject, event.data.value);
+                }
+                break;
+            }
+            case REQUESTS_DICTIONARY.get("resizeWidget").response: {
+                const error = event.data.value.error;
+                if (error) {
+                    this.alert(error);
+                    return;
+                }
+                const line = event.data.value.widgetSectionLine;
+                const match = /widget-(\d+)-(\d+)/.exec(event.data.value.widgetId);
+                const width = parseFloat(event.data.value.widthUnits);
+                const height = parseFloat(event.data.value.heightUnits);
+
+                if (match && isValidNumber(width) && isValidNumber(height)) {
+                    try {
+                        const group = parseInt(match[1], 10);
+                        const widget = parseInt(match[2], 10);
+
+                        this.changeValueSetting(group, widget, line, { name: "width-units", value: width });
+                        this.changeValueSetting(group, widget, line, { name: "height-units", value: height });
+                    } catch (error) {
+                        // we couldn't retrieve group and widget from string having format 'widget-1-1'
+                    }
+                }
+                // console.log(event.data.value);
+                break;
+            }
+            case REQUESTS_DICTIONARY.get("dragWidget").response: {
+                const error = event.data.value.error;
+                if (error) {
+                    this.alert(error);
+                    return;
+                }
+                const line = event.data.value.widgetSectionLine;
+                const match = /widget-(\d+)-(\d+)/.exec(event.data.value.widgetId);
+                const row = parseInt(event.data.value.posY, 10);
+                const column = parseInt(event.data.value.posX, 10);
+
+                if (match && isValidNumber(row) && isValidNumber(column)) {
+                    try {
+                        const group = parseInt(match[1], 10);
+                        const widget = parseInt(match[2], 10);
+
+                        const position = `${row}-${column}`;
+
+                        this.changeValueSetting(group, widget, line, { name: "position", value: position });
+                    } catch (error) {
+                        // we couldn't retrieve group and widget from string having format 'widget-1-1'
+                    }
+                }
+
+                break;
+            }
+            default: {
+                console.log(`Unknown event type: ${event.data.type}`);
+            }
         }
     }
 
+    /**
+     * 
+     * @param group - target config group number
+     * @param widget - target widget group number
+     * @param dimension - setting name to search for
+     */
+    private changeValueSetting(group: number, widget: number, lineIndex: number, dimension: {
+        name: string, value: number | string
+    }): void {
+        const configText = this.getEditorValue().split("\n");
+        this._preventLock = true;
+        const model = this.chartsEditor.getModel();
+
+        let i = lineIndex+1;
+        let lastWidgetConfigLine = i+1;
+        for (; i < configText.length; i++) {
+            let line = configText[i];
+
+            /**
+             * If we found setting inside target section, substitute it
+             */
+            if (new RegExp(`\\b${dimension.name}\\b`).test(line)) {
+                model.applyEdits([{
+                    forceMoveMarkers: true,
+                    range: new monaco.Range(
+                        i + 1,
+                        model.getLineFirstNonWhitespaceColumn(i + 1),
+                        i + 1,
+                        model.getLineLastNonWhitespaceColumn(i + 1)
+                    ),
+                    text: `${dimension.name} = ${dimension.value}`,
+                }]);
+                return;
+                /**
+                 * Otherwise insert this setting at the end of the section
+                 */
+            } else if (/\[\w+\]/.test(line)) {
+                break;
+            }
+
+            if (line.trim()) {
+                lastWidgetConfigLine = i+1;
+            }
+        }
+
+        let indent = model.getLineFirstNonWhitespaceColumn(lastWidgetConfigLine) - 1;
+        // If last line is empty, indent will be -1. Try previous line
+        let nonEmptyLineIndex = lastWidgetConfigLine-1;
+        while (indent < 0) {
+            if (nonEmptyLineIndex<0) {
+                indent = 0;
+                break;
+            }
+            indent = model.getLineFirstNonWhitespaceColumn(nonEmptyLineIndex--) - 1;
+        }
+
+        let text =  " ".repeat(indent) + `${dimension.name} = ${dimension.value}\n`
+        if (lastWidgetConfigLine >= configText.length) {
+            text = "\n" + text;
+        }
+        
+        model.applyEdits([{
+            forceMoveMarkers: true,
+            range: new monaco.Range(
+                lastWidgetConfigLine + 1,
+                0,
+                lastWidgetConfigLine + 1,
+                0
+            ),
+            text,
+        }]);
+
+        this.iframeElement.contentWindow.postMessage({
+            type: REQUESTS_DICTIONARY.get("insertConfigRows").request,
+            value: { lines: [text], start: i }
+        }, "*");
+
+    }
     /**
      * Create controls buttons to increase/decrease editor's font-size
      * @return {HTMLElement}
@@ -369,6 +590,13 @@ export class EditorActions {
 
         return container;
     }
+
+    private lockInteractions() {
+        this.iframeElement.contentWindow.postMessage({
+            type: REQUESTS_DICTIONARY.get("lockInteractions").request,
+            value: null
+        }, "*");
+    }
 }
 
 /**
@@ -398,7 +626,7 @@ function sendStatusOnConnect(iframe: HTMLIFrameElement, value: boolean = false) 
         const ping = function run() {
             if (!stopped) {
                 iframe.contentWindow.postMessage({
-                    type: POSTMESSAGE_REQUEST_KEY,
+                    type: REQUESTS_DICTIONARY.get("toggleGrid").request,
                     value
                 }, "*");
                 setTimeout(run, 50);
@@ -460,3 +688,10 @@ window.addEventListener("keydown", (event) => {
         event.stopPropagation();
     }
 });
+
+/**
+ * Check that number is valid and finite
+ */
+function isValidNumber(num: number): boolean {
+    return !isNaN(num) && isFinite(num);
+}
