@@ -156,14 +156,14 @@ export class EditorActions {
     private iframeElement: HTMLIFrameElement = null;
     private grid: GridStatus;
 
-    private updateWidth: (group: number, widget: number, line: number, dimension: {
+    private updateWidth: (line: number, dimension: {
         name: string, value: number
     }) => void = debounce(this.changeValueSetting, 50);
 
     /**
      * Can be used for config properties update with debounce
      */
-    private updateHeight: (group: number, widget: number, line: number, dimension: {
+    private updateHeight: (line: number, dimension: {
         name: string, value: number
     }) => void = debounce(this.changeValueSetting, 50);
     private _preventLock: boolean = false;
@@ -423,22 +423,17 @@ export class EditorActions {
                     return;
                 }
                 const line = event.data.value.widgetSectionLine;
-                const match = /widget-(\d+)-(\d+)/.exec(event.data.value.widgetId);
                 const width = parseFloat(event.data.value.widthUnits);
                 const height = parseFloat(event.data.value.heightUnits);
 
-                if (match && isValidNumber(width) && isValidNumber(height)) {
+                if (line != null) {
                     try {
-                        const group = parseInt(match[1], 10);
-                        const widget = parseInt(match[2], 10);
-
-                        this.changeValueSetting(group, widget, line, { name: "width-units", value: width });
-                        this.changeValueSetting(group, widget, line, { name: "height-units", value: height });
+                        this.changeValueSetting(line, { name: "width-units", value: width });
+                        this.changeValueSetting(line, { name: "height-units", value: height });
                     } catch (error) {
                         // we couldn't retrieve group and widget from string having format 'widget-1-1'
                     }
                 }
-                // console.log(event.data.value);
                 break;
             }
             case REQUESTS_DICTIONARY.get("dragWidget").response: {
@@ -448,18 +443,13 @@ export class EditorActions {
                     return;
                 }
                 const line = event.data.value.widgetSectionLine;
-                const match = /widget-(\d+)-(\d+)/.exec(event.data.value.widgetId);
                 const row = parseInt(event.data.value.posY, 10);
                 const column = parseInt(event.data.value.posX, 10);
 
-                if (match && isValidNumber(row) && isValidNumber(column)) {
+                if (line != null) {
                     try {
-                        const group = parseInt(match[1], 10);
-                        const widget = parseInt(match[2], 10);
-
                         const position = `${row}-${column}`;
-
-                        this.changeValueSetting(group, widget, line, { name: "position", value: position });
+                        this.changeValueSetting(line, { name: "position", value: position });
                     } catch (error) {
                         // we couldn't retrieve group and widget from string having format 'widget-1-1'
                     }
@@ -479,20 +469,20 @@ export class EditorActions {
      * @param widget - target widget group number
      * @param dimension - setting name to search for
      */
-    private changeValueSetting(group: number, widget: number, lineIndex: number, dimension: {
+    private changeValueSetting(lineIndex: number, dimension: {
         name: string, value: number | string
     }): void {
         const configText = this.getEditorValue().split("\n");
         this._preventLock = true;
         const model = this.chartsEditor.getModel();
 
-        let i = lineIndex+1;
-        let lastWidgetConfigLine = i+1;
-        for (; i < configText.length; i++) {
+        let widgetSectionStartLine = lineIndex+1; // # of line where `[widget]` is
+        for (let i = widgetSectionStartLine; i < configText.length; i++) {
             let line = configText[i];
 
             /**
              * If we found setting inside target section, substitute it
+             * Otherwise insert this setting at the end of the section
              */
             if (new RegExp(`\\b${dimension.name}\\b`).test(line)) {
                 model.applyEdits([{
@@ -506,40 +496,24 @@ export class EditorActions {
                     text: `${dimension.name} = ${dimension.value}`,
                 }]);
                 return;
-                /**
-                 * Otherwise insert this setting at the end of the section
-                 */
             } else if (/\[\w+\]/.test(line)) {
+                // Widget section is over, no need to continue search
                 break;
-            }
-
-            if (line.trim()) {
-                lastWidgetConfigLine = i+1;
             }
         }
 
-        let indent = model.getLineFirstNonWhitespaceColumn(lastWidgetConfigLine) - 1;
-        // If last line is empty, indent will be -1. Try previous line
-        let nonEmptyLineIndex = lastWidgetConfigLine-1;
-        while (indent < 0) {
-            if (nonEmptyLineIndex<0) {
-                indent = 0;
-                break;
-            }
-            indent = model.getLineFirstNonWhitespaceColumn(nonEmptyLineIndex--) - 1;
-        }
-
+        let indent = model.getLineFirstNonWhitespaceColumn(widgetSectionStartLine) + 1; // 2 spaces after [widget]
         let text =  " ".repeat(indent) + `${dimension.name} = ${dimension.value}\n`
-        if (lastWidgetConfigLine >= configText.length) {
+        if (widgetSectionStartLine >= configText.length) {
             text = "\n" + text;
         }
         
         model.applyEdits([{
             forceMoveMarkers: true,
             range: new monaco.Range(
-                lastWidgetConfigLine + 1,
+                widgetSectionStartLine + 1,
                 0,
-                lastWidgetConfigLine + 1,
+                widgetSectionStartLine + 1,
                 0
             ),
             text,
@@ -547,7 +521,7 @@ export class EditorActions {
 
         this.iframeElement.contentWindow.postMessage({
             type: REQUESTS_DICTIONARY.get("insertConfigRows").request,
-            value: { lines: [text], start: i }
+            value: { lines: [text], start: widgetSectionStartLine+1 }
         }, "*");
 
     }
@@ -688,10 +662,3 @@ window.addEventListener("keydown", (event) => {
         event.stopPropagation();
     }
 });
-
-/**
- * Check that number is valid and finite
- */
-function isValidNumber(num: number): boolean {
-    return !isNaN(num) && isFinite(num);
-}
