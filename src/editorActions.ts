@@ -428,8 +428,8 @@ export class EditorActions {
 
                 if (line != null) {
                     try {
-                        this.changeValueSetting(line, { name: "width-units", value: width });
-                        this.changeValueSetting(line, { name: "height-units", value: height });
+                        this.changeValueSetting(line, { name: "width-units", value: width, defaultValue: 1 });
+                        this.changeValueSetting(line, { name: "height-units", value: height, defaultValue: 1 });
                     } catch (error) {
                         // we couldn't retrieve group and widget from string having format 'widget-1-1'
                     }
@@ -443,13 +443,19 @@ export class EditorActions {
                     return;
                 }
                 const line = event.data.value.widgetSectionLine;
-                const row = parseInt(event.data.value.posY, 10);
-                const column = parseInt(event.data.value.posX, 10);
+                const posY = parseFloat(event.data.value.posY);
+                const posX = parseFloat(event.data.value.posX);
+                const row = Math.floor(posY);
+                const column = Math.floor(posX);
+                const left = +(posX - column).toFixed(1);
+                const top = +(posY - row).toFixed(1);
 
                 if (line != null) {
                     try {
                         const position = `${row}-${column}`;
                         this.changeValueSetting(line, { name: "position", value: position });
+                        this.changeValueSetting(line, { name: "left-units", value: left, defaultValue: 0 });
+                        this.changeValueSetting(line, { name: "top-units", value: top, defaultValue: 0 });
                     } catch (error) {
                         // we couldn't retrieve group and widget from string having format 'widget-1-1'
                     }
@@ -470,12 +476,11 @@ export class EditorActions {
      * @param dimension - setting name to search for
      */
     private changeValueSetting(lineIndex: number, dimension: {
-        name: string, value: number | string
+        name: string, value: number | string, defaultValue?: number | string
     }): void {
         const configText = this.getEditorValue().split("\n");
         this._preventLock = true;
         const model = this.chartsEditor.getModel();
-
         let widgetSectionStartLine = lineIndex+1; // # of line where `[widget]` is
         for (let i = widgetSectionStartLine; i < configText.length; i++) {
             let line = configText[i];
@@ -500,6 +505,10 @@ export class EditorActions {
                 // Widget section is over, no need to continue search
                 break;
             }
+        }
+
+        if (dimension.defaultValue != null && dimension.value == dimension.defaultValue) {
+            return;
         }
 
         let indent = model.getLineFirstNonWhitespaceColumn(widgetSectionStartLine) + 1; // 2 spaces after [widget]
