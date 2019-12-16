@@ -66,6 +66,12 @@ const REQUESTS_DICTIONARY: Map<string, PortalCommunication> = new Map([
         }
     ],
     [
+        "widgetPositionChangedEvent", {
+            request: "",
+            response: "axiWidgetPositionChangedResponse"
+        }
+    ],
+    [
         "insertConfigRows", {
             request: "axiInsertConfigRows",
             response: "axiInsertConfigRowsResponse"
@@ -416,6 +422,26 @@ export class EditorActions {
                 }
                 break;
             }
+            case REQUESTS_DICTIONARY.get("widgetPositionChangedEvent").response: {
+                const error = event.data.value.error;
+                if (error) {
+                    this.alert(error);
+                    return;
+                }
+                const line = event.data.value.widgetSectionLine;
+
+                if (line != null) {
+                    try {
+                        const position = event.data.value.position;
+                        this.changeValueSetting(line, { name: "position", value: position });
+                    } catch (error) {
+                        // we couldn't retrieve group and widget from string having format 'widget-1-1'
+                    }
+                }
+
+                break;
+            }
+            /** @deprecated */
             case REQUESTS_DICTIONARY.get("resizeWidget").response: {
                 const error = event.data.value.error;
                 if (error) {
@@ -436,6 +462,7 @@ export class EditorActions {
                 }
                 break;
             }
+            /** @deprecated */
             case REQUESTS_DICTIONARY.get("dragWidget").response: {
                 const error = event.data.value.error;
                 if (error) {
@@ -443,19 +470,13 @@ export class EditorActions {
                     return;
                 }
                 const line = event.data.value.widgetSectionLine;
-                const posY = parseFloat(event.data.value.posY);
-                const posX = parseFloat(event.data.value.posX);
-                const row = Math.floor(posY);
-                const column = Math.floor(posX);
-                const left = +(posX - column).toFixed(1);
-                const top = +(posY - row).toFixed(1);
+                const row = parseFloat(event.data.value.posY);
+                const column = parseFloat(event.data.value.posX);
 
                 if (line != null) {
                     try {
                         const position = `${row}-${column}`;
                         this.changeValueSetting(line, { name: "position", value: position });
-                        this.changeValueSetting(line, { name: "left-units", value: left, defaultValue: 0 });
-                        this.changeValueSetting(line, { name: "top-units", value: top, defaultValue: 0 });
                     } catch (error) {
                         // we couldn't retrieve group and widget from string having format 'widget-1-1'
                     }
