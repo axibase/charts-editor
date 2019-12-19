@@ -18,6 +18,7 @@
               {
                 "type": "string",
                 "enum": [
+                  "axis",
                   "column",
                   "configuration",
                   "dropdown",
@@ -44,6 +45,7 @@
                 "items": {
                   "type": "string",
                   "enum": [
+                    "axis",
                     "column",
                     "configuration",
                     "dropdown",

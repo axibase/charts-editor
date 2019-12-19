@@ -1021,6 +1021,32 @@
             "widget": "treemap"
         },
         {
+            "displayName": "delta",
+            "type": "number",
+            "section": "axis",
+            "widget": "chart",
+            "example": 10,
+            "minValue": {
+                "value": 0,
+                "excluded": true
+            }
+        },
+        {
+            "displayName": "delta-percent",
+            "type": "number",
+            "section": "axis",
+            "widget": "chart",
+            "example": 5.0,
+            "maxValue": {
+                "value": 100,
+                "excluded": true
+            },
+            "minValue": {
+                "value": 0,
+                "excluded": true
+            }
+        },
+        {
             "displayName": "depth",
             "type": "integer",
             "example": 3,
@@ -1564,13 +1590,13 @@
             "type": "boolean",
             "example": true,
             "defaultValue": false,
-            "section": "widget"
+            "section": "series"
         },
         {
             "displayName": "downsample-algorithm",
             "type": "enum",
             "example": "DETAIL",
-            "section": "widget",
+            "section": "series",
             "enum": [
                 "DETAIL",
                 "INTERPOLATE"
@@ -1581,7 +1607,7 @@
             "type": "number",
             "example": 4,
             "minValue": 0,
-            "section": "widget",
+            "section": "series",
             "excludes": [
                 "downsample-ratio"
             ]
@@ -1591,7 +1617,7 @@
             "type": "number",
             "example": 2,
             "minValue": 1,
-            "section": "widget",
+            "section": "series",
             "excludes": [
                 "downsample-difference"
             ]
@@ -1600,14 +1626,14 @@
             "displayName": "downsample-gap",
             "type": "interval",
             "example": "10 minute",
-            "section": "widget"
+            "section": "series"
         },
         {
             "displayName": "downsample-order",
             "type": "integer",
             "example": 5,
             "minValue": 0,
-            "section": "widget"
+            "section": "series"
         },
         {
             "displayName": "duration",
@@ -3470,6 +3496,14 @@
             ]
         },
         {
+            "displayName": "left",
+            "type": "boolean",
+            "section": "axis",
+            "example": false,
+            "widget": "chart",
+            "defaultValue": "true"
+        },
+        {
             "displayName": "left-axis",
             "type": "enum",
             "example": "fraction",
@@ -4095,10 +4129,24 @@
             "section": "series"
         },
         {
+            "displayName": "max",
+            "type": "number",
+            "example": 40,
+            "section": "axis",
+            "widget": "chart"
+        },
+        {
             "displayName": "max-font-size",
             "type": "integer",
             "example": 14,
             "defaultValue": 100
+        },
+        {
+            "displayName": "max-force",
+            "type": "number",
+            "example": 50,
+            "section": "axis",
+            "widget": "chart"
         },
         {
             "displayName": "maximum",
@@ -4210,6 +4258,13 @@
             "example": "CPU Busy, %"
         },
         {
+            "displayName": "min",
+            "widget": "chart",
+            "section": "axis",
+            "type": "integer",
+            "example": 42
+        },
+        {
             "displayName": "min-caption-size",
             "widget": "pie",
             "section": "widget",
@@ -4220,6 +4275,13 @@
             "displayName": "min-font-size",
             "type": "integer",
             "example": 10
+        },
+        {
+            "displayName": "min-force",
+            "widget": "chart",
+            "section": "axis",
+            "type": "integer",
+            "example": 22
         },
         {
             "displayName": "minimum",
@@ -7925,9 +7987,14 @@
         {
             "displayName": "ticks",
             "type": "integer",
-            "section": "widget",
+            "section": ["widget", "axis"],
             "example": 10,
-            "defaultValue": 5
+            "defaultValue": 5,
+            "override": {
+                "[section == 'axis']": {
+                    "widget": "chart"
+                }
+            }
         },
         {
             "displayName": "ticks-right",
@@ -7972,7 +8039,13 @@
         {
             "displayName": "title",
             "type": "string",
-            "example": "My portal"
+            "example": "My portal",
+            "section": ["configuration", "widget", "axis"],
+            "override": {
+                "[section == 'axis']": {
+                    "widget": "chart"
+                }
+            }
         },
         {
             "displayName": "tooltip",
