@@ -2280,6 +2280,13 @@
             "widget": "page"
         },
         {
+            "displayName": "fix-start-time",
+            "type": "boolean",
+            "example": true,
+            "defaultValue": false,
+            "section": "widget"
+        },
+        {
             "displayName": "font-scale",
             "type": "number",
             "example": 0.7,
