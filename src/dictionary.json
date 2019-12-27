@@ -3094,6 +3094,121 @@
             ]
         },
         {
+            "displayName": "group-place-constraint",
+            "type": "string",
+            "section": "series",
+            "example": "max() > 10",
+            "script": {
+                "returnValue": "boolean",
+                "fields": [
+                    {
+                        "name": "stdev",
+                        "type": "function"
+                    },
+                    {
+                        "name": "median_abs_dev",
+                        "type": "function"
+                    },
+                    {
+                        "name": "max",
+                        "type": "function"
+                    },
+                    {
+                        "name": "min",
+                        "type": "function"
+                    },
+                    {
+                        "name": "sum",
+                        "type": "function"
+                    },
+                    {
+                        "name": "count",
+                        "type": "function"
+                    },
+                    {
+                        "name": "median",
+                        "type": "function"
+                    },
+                    {
+                        "name": "avg",
+                        "type": "function"
+                    },
+                    {
+                        "name": "percentile",
+                        "type": "function",
+                        "args": [
+                            {
+                                "name": "rank",
+                                "required": true,
+                                "type": "number"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "displayName": "group-place-count",
+            "type": "number",
+            "section": "series",
+            "example": 10,
+            "minValue": 0
+        },
+        {
+            "displayName": "group-place-minimize",
+            "type": "string",
+            "section": "series",
+            "example": "stdev()",
+            "script": {
+                "returnValue": "number",
+                "fields": [
+                    {
+                        "name": "stdev",
+                        "type": "function"
+                    },
+                    {
+                        "name": "median_abs_dev",
+                        "type": "function"
+                    },
+                    {
+                        "name": "max",
+                        "type": "function"
+                    },
+                    {
+                        "name": "min",
+                        "type": "function"
+                    },
+                    {
+                        "name": "sum",
+                        "type": "function"
+                    },
+                    {
+                        "name": "count",
+                        "type": "function"
+                    },
+                    {
+                        "name": "median",
+                        "type": "function"
+                    },
+                    {
+                        "name": "avg",
+                        "type": "function"
+                    },
+                    {
+                        "name": "percentile",
+                        "type": "function",
+                        "args": [
+                            {
+                                "name": "rank",
+                                "required": true,
+                                "type": "number"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
             "displayName": "group-statistic",
             "type": "enum",
             "example": "sum",
@@ -3119,6 +3234,13 @@
                 "threshold_duration",
                 "threshold_percent"
             ]
+        },
+        {
+            "displayName": "group-tags",
+            "type": "string",
+            "section": "series",
+            "example": "tag-1, tag-2",
+            "multiple": true
         },
         {
             "displayName": "header-style",
@@ -3480,7 +3602,7 @@
             "example": false,
             "defaultValue": true,
             "widget": "chart",
-            "section": "widget"
+            "section": "series"
         },
         {
             "displayName": "last-value-label",
@@ -3501,14 +3623,6 @@
                 "rectangle",
                 "circle"
             ]
-        },
-        {
-            "displayName": "left",
-            "type": "boolean",
-            "section": "axis",
-            "example": false,
-            "widget": "chart",
-            "defaultValue": "true"
         },
         {
             "displayName": "left-axis",
@@ -5843,6 +5957,14 @@
             "type": "interval",
             "example": "5 minute",
             "section": "series"
+        },
+        {
+            "displayName": "right",
+            "type": "boolean",
+            "section": "axis",
+            "example": false,
+            "widget": "chart",
+            "defaultValue": false
         },
         {
             "displayName": "right-axis",
