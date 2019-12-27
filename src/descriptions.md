@@ -1,5 +1,7 @@
 ## addmeta  
   
+Include metric and entity metadata in the response.  
+  
 ## aheadtimespan  
   
 Show an amount of time ahead of the last series value.  

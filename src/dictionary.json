@@ -4,7 +4,7 @@
         {
             "displayName": "add-meta",
             "type": "boolean",
-            "section": "series",
+            "section": "widget",
             "example": true,
             "defaultValue": false
         },
