@@ -3046,12 +3046,6 @@
             "defaultValue": "metric"
         },
         {
-            "displayName": "group-first",
-            "type": "boolean",
-            "example": false,
-            "section": "series"
-        },
-        {
             "displayName": "group-interpolate",
             "type": "enum",
             "section": "series",
@@ -3153,6 +3147,36 @@
             "section": "series",
             "example": 10,
             "minValue": 0
+        },
+        {
+            "displayName": "group-place-entities",
+            "type": "string",
+            "section": "series",
+            "multiple": true,
+            "example": "lp_group_1, lp_group_2"
+        },
+        {
+            "displayName": "group-place-entity-group",
+            "type": "string",
+            "section": "series",
+            "example": "servers"
+        },
+        {
+            "displayName": "group-place-entity-expression",
+            "type": "string",
+            "section": "series",
+            "example": "nur*"
+        },
+        {
+            "displayName": "group-place-method",
+            "type": "enum",
+            "section": "series",
+            "example": "greedy_correlations",
+            "defaultValue": "greedy_simple",
+            "enum": [
+                "greedy_correlations",
+                "greedy_simple"
+            ]
         },
         {
             "displayName": "group-place-minimize",
@@ -3407,7 +3431,7 @@
         {
             "displayName": "icon",
             "type": "string",
-            "example": "value > 1 ? 'exclamation-sign' : 'ok'",
+            "example": "value > 1 ? 'error' : 'tick'",
             "script": {
                 "returnValue": "string",
                 "fields": [

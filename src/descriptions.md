@@ -679,14 +679,6 @@ Counter format.
   
 Disable column name formatting.  
   
-## panelsperiod  
-  
-Comma-separated list of aggregation periods to be used instead of default ones in `summarize-period` panel. 
-  
-## parsenumbers  
-    
-If `true`, column values are processed as numbers.  
-  
 ## formatsize  
   
 Format size setting values.  
@@ -708,10 +700,6 @@ Color intensity of the first and the last sector in each range.
 ## griddisplay  
   
 Show grid displaying how many widgets can be in group.  
-  
-## groupfirst  
-  
-Control the sequence of aggregation and grouping. If set to `true`, grouping is performed before aggregation.  
   
 ## groupinterpolate  
   
@@ -739,6 +727,22 @@ Boolean expression that series in each subgroup must satisfy.
 ## groupplacecount  
    
 Maximum number of subgroups. The response can contain less than the maximum.  
+   
+## groupplaceentities  
+   
+Entities containing group-specific information using entity tags with numeric characteristics of a subgroup.  
+  
+## groupplaceentitygroup  
+  
+Alternative to `entities` setting using an [entity group](https://axibase.com/docs/atsd/api/meta/entity-group/) name.  
+ 
+## groupplaceentityexpression  
+   
+Alternative to `entities` setting using an [expression](https://axibase.com/docs/atsd/api/data/filter-entity.html#entityexpression-syntax).  
+   
+## groupplacemethod  
+   
+The algorithm used to solve the [packing](https://axibase.com/docs/atsd/api/data/series/group.html#packing) problem.  
   
 ## groupplaceminimize  
   
@@ -799,7 +803,7 @@ Hide horizontal grid.
   
 ## icon  
   
-Name of the icon displayed in the cell.  
+Name of the icon displayed in the cell. Refer to [Blueprint](https://blueprintjs.com/docs/versions/1/#core/icons) icons.  
   
 ## iconalertexpression  
   
@@ -1243,9 +1247,17 @@ Offset from the edge of the container in pixels.
   
 Display legend labels.  
   
+## panelsperiod  
+  
+Comma-separated list of aggregation periods to be used instead of default ones in `summarize-period` panel.  
+   
 ## parent  
   
 ID of parent vertex.  
+  
+## parsenumbers  
+  
+If `true`, column values are processed as numbers.  
   
 ## path  
   
