@@ -82,6 +82,12 @@ const REQUESTS_DICTIONARY: Map<string, PortalCommunication> = new Map([
             request: "axiLockInteractions",
             response: "axiLockInteractionsResponse"
         }
+    ],
+    [
+        "openWidgetWizard", {
+            request: "axiOpenWidgetWizard",
+            response: "axiWidgetWizardConfigReady"
+        }
     ]
 ]);
 
@@ -422,6 +428,11 @@ export class EditorActions {
                 }
                 break;
             }
+            case REQUESTS_DICTIONARY.get("openWidgetWizard").response: {
+                let widgetConfig: string = event.data.value;
+                this.insertEditorValue(widgetConfig);
+                break;
+            }
             case REQUESTS_DICTIONARY.get("widgetPositionChangedEvent").response: {
                 const error = event.data.value.error;
                 if (error) {
@@ -598,6 +609,13 @@ export class EditorActions {
     private lockInteractions() {
         this.iframeElement.contentWindow.postMessage({
             type: REQUESTS_DICTIONARY.get("lockInteractions").request,
+            value: null
+        }, "*");
+    }
+
+    public openWidgetWizard() {
+        this.iframeElement.contentWindow.postMessage({
+            type: REQUESTS_DICTIONARY.get("openWidgetWizard").request,
             value: null
         }, "*");
     }

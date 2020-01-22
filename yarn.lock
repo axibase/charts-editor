@@ -4355,11 +4355,6 @@ tr46@^1.0.1:
   dependencies:
     punycode "^2.1.0"
 
-ts-debounce@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ts-debounce/-/ts-debounce-1.0.0.tgz#e433301744ba75fe25466f7f23e1382c646aae6a"
-  integrity sha512-V+IzWj418IoqqxVJD6I0zjPtgIyvAJ8VyViqzcxZ0JRiJXsi5mCmy1yUKkWd2gUygT28a8JsVFCgqdrf2pLUHQ==
-
 ts-loader@^6.0.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-6.2.1.tgz#67939d5772e8a8c6bdaf6277ca023a4812da02ef"
