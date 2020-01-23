@@ -3066,8 +3066,15 @@
             "section": "series"
         },
         {
+            "displayName": "group-interpolate-window-length",
+            "type": "integer",
+            "example": -1,
+            "section": "series"
+        },
+        {
             "displayName": "group-keys",
             "type": "string",
+            "multiple": true,
             "example": "entity, type",
             "section": "series"
         },
@@ -3239,6 +3246,7 @@
             "section": "series",
             "enum": [
                 "count",
+                "detail",
                 "min",
                 "max",
                 "sum",
@@ -3248,15 +3256,9 @@
                 "standard_deviation",
                 "first",
                 "last",
-                "delta",
-                "counter",
-                "wtavg",
-                "wavg",
                 "min_value_time",
                 "max_value_time",
-                "threshold_count",
-                "threshold_duration",
-                "threshold_percent"
+                "median_abs_dev"
             ]
         },
         {
@@ -6154,6 +6156,7 @@
             "displayName": "script",
             "type": "string",
             "example": "console.log(widget.config)",
+            "multiLine": true,
             "script": {
                 "returnValue": "void",
                 "fields": [

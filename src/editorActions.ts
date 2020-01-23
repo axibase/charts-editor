@@ -429,7 +429,7 @@ export class EditorActions {
                 break;
             }
             case REQUESTS_DICTIONARY.get("openWidgetWizard").response: {
-                let widgetConfig: string = event.data.value;
+                let widgetConfig: string = event.data.value.widgetConfig;
                 this.insertEditorValue(widgetConfig);
                 break;
             }
