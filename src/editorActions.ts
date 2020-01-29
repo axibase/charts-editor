@@ -1,5 +1,5 @@
-import { editor } from "monaco-editor-core";
-
+import { editor, Range } from "monaco-editor-core";
+import { IPosition } from "monaco-editor-core/esm/vs/editor/editor.api";
 
 function debounce<T extends Function>(func: T, delay = 50): T {
     let timeout: ReturnType<typeof setTimeout> | undefined;
@@ -72,9 +72,21 @@ const REQUESTS_DICTIONARY: Map<string, PortalCommunication> = new Map([
         }
     ],
     [
+        "widgetRemovedEvent", {
+            request: "",
+            response: "axiWidgetRemoveResponse"
+        }
+    ],
+    [
         "insertConfigRows", {
             request: "axiInsertConfigRows",
             response: "axiInsertConfigRowsResponse"
+        }
+    ],
+    [
+        "removeConfigRows", {
+            request: "axiRemoveConfigRows",
+            response: "axiRemoveConfigRowsResponse"
         }
     ],
     [
@@ -429,8 +441,34 @@ export class EditorActions {
                 break;
             }
             case REQUESTS_DICTIONARY.get("openWidgetWizard").response: {
-                let widgetConfig: string = event.data.value.widgetConfig;
-                this.insertEditorValue(widgetConfig);
+                let value = event.data.value;
+                let error: string = value.error;
+                if (error) {
+                    this.alert(error);
+                } else {
+                    let widgetConfig: string = value.widgetConfig;
+                    this._preventLock = true;
+                    this.insertEditorValue(widgetConfig);
+                }
+                break;
+            }
+            case REQUESTS_DICTIONARY.get("widgetRemovedEvent").response: {
+                const error = event.data.value.error;
+                if (error) {
+                    this.alert(error);
+                    return;
+                }
+                const line = event.data.value.widgetSectionLine;
+
+                if (line != null) {
+                    try {
+                        this._preventLock = true;
+                        this.removeWidgetAtLine(line + 1);
+                    } catch (error) {
+                        // we couldn't retrieve group and widget from string having format 'widget-1-1'
+                    }
+                }
+
                 break;
             }
             case REQUESTS_DICTIONARY.get("widgetPositionChangedEvent").response: {
@@ -606,6 +644,34 @@ export class EditorActions {
         return container;
     }
 
+    private removeWidgetAtLine(line: number) {
+        const model = this.chartsEditor.getModel();
+        const linepos = (line: number) => ({lineNumber: line, column: 0} as IPosition);
+        const widgetStart = model.findNextMatch("[widget]", linepos(line), false, false, null, false);
+        if (!widgetStart) return;
+
+        const startLine = widgetStart.range.startLineNumber;
+        const widgetEnd = model.findNextMatch("[widget]", linepos(startLine + 1), false, false, null, false);
+        let endLine = model.getLineCount();
+        if (widgetEnd) {
+            let maybeEndLine = widgetEnd.range.startLineNumber;
+            if (startLine < maybeEndLine) {
+                endLine = maybeEndLine;
+            }
+        }
+        model.applyEdits([{
+            range: Range.fromPositions(linepos(startLine), linepos(endLine)),
+            text: null  
+        }]);
+
+        let linesStub = Array(endLine - startLine).map(l => "");
+
+        this.iframeElement.contentWindow.postMessage({
+            type: REQUESTS_DICTIONARY.get("removeConfigRows").request,
+            value: { lines: linesStub, start: startLine }
+        }, "*");
+    }
+
     private lockInteractions() {
         this.iframeElement.contentWindow.postMessage({
             type: REQUESTS_DICTIONARY.get("lockInteractions").request,
@@ -616,7 +682,9 @@ export class EditorActions {
     public openWidgetWizard() {
         this.iframeElement.contentWindow.postMessage({
             type: REQUESTS_DICTIONARY.get("openWidgetWizard").request,
-            value: null
+            value: {
+                position: { line: this.chartsEditor.getModel().getLineCount() + 2 } // 2 blank lines are inserted before widget
+            }
         }, "*");
     }
 }
