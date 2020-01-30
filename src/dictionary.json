@@ -4408,7 +4408,7 @@
             "displayName": "min",
             "widget": "chart",
             "section": "axis",
-            "type": "integer",
+            "type": "number",
             "example": 42
         },
         {
@@ -4427,7 +4427,7 @@
             "displayName": "min-force",
             "widget": "chart",
             "section": "axis",
-            "type": "integer",
+            "type": "number",
             "example": 22
         },
         {
@@ -8233,7 +8233,7 @@
             "displayName": "total-size",
             "widget": "treemap",
             "section": "widget",
-            "type": "integer",
+            "type": "number",
             "example": 70
         },
         {
