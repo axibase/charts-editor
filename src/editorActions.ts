@@ -176,6 +176,8 @@ export class EditorActions {
     public static saveEditorContents: Callback;
 
     public chartsEditor: editor.ICodeEditor;
+    public awaitConnected: Promise<boolean>;
+    
     private subscribers: Subscriber[] = [];
     private iframeElement: HTMLIFrameElement = null;
     private grid: GridStatus;
@@ -211,7 +213,11 @@ export class EditorActions {
         if (options.iframe) {
             this.iframeElement = options.iframe;
             this.iframeElement.addEventListener("load", () => {
-                sendStatusOnConnect(this.iframeElement, this.grid.value);
+                this.awaitConnected = 
+                    sendStatusOnConnect(this.iframeElement, this.grid.value)
+                        .then(() => true)
+                        .catch(() => false);
+                
             });
         }
 
