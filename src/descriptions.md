@@ -166,9 +166,7 @@ Widget setting changed upon drop-down list selection. To update the widget subse
   
 Displays background circle.  
   
-## class  
-  
-Apply Unix style with black background.  
+## class
   
 ## collapsible  
   
@@ -855,6 +853,8 @@ Define the period for interpolated values.
   
 ## intervalformat  
   
+## instrument
+
 ## join  
   
 Performs join by `entity` and `type`.  
@@ -1531,6 +1531,8 @@ Statistical function applied to values within each period.
 ## summarytext  
   
 JavaScript expression returning caption used for cell if `collapsible = true`.  
+
+## symbol
   
 ## table  
   

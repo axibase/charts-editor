@@ -26,7 +26,11 @@ export class ChartsWorker {
       document, position
     ).getCompletionItems();
 
-    return Promise.resolve(ls.CompletionList.create(completions));
+    if ("then" in completions) {
+      return completions.then(cs => ls.CompletionList.create(cs));
+    } else {
+      return Promise.resolve(ls.CompletionList.create(completions));
+    }
   }
 
   public doValidation(uri: string): Thenable<ls.Diagnostic[]> {

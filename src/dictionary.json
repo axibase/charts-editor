@@ -718,26 +718,25 @@
             "widget": "text"
         },
         {
+            "displayName": "instrument",
+            "type": "string",
+            "example": "symbol_[class]",
+            "section": "series",
+            "excludes": ["entity", "symbol", "class"]
+        },
+        {
             "displayName": "class",
-            "type": "enum",
-            "example": "terminal",
-            "enum": [
-                "terminal",
-                "metro"
-            ],
-            "section": "widget",
-            "override": {
-                "[widget == 'console' || widget == 'property']": {
-                    "enum": [
-                        "terminal"
-                    ]
-                },
-                "[widget == 'box']": {
-                    "enum": [
-                        "metro"
-                    ]
-                }
-            }
+            "type": "string",
+            "example": "TQBR",
+            "section": "series",
+            "excludes": ["entity", "instrument"]
+        },
+        {
+            "displayName": "symbol",
+            "type": "string",
+            "section": "series",
+            "example": "SYMBOL",
+            "excludes": ["entity", "instrument"]
         },
         {
             "displayName": "collapsible",
@@ -4520,7 +4519,9 @@
                 "pie",
                 "ring",
                 "auto",
-                "line"
+                "line",
+                "terminal",
+                "metro"
             ],
             "override": {
                 "[widget == 'chart']": {
@@ -4561,6 +4562,16 @@
                     "enum": [
                         "hierarchy",
                         "non-hierarchy"
+                    ]
+                },
+                "[widget == 'console' || widget == 'property']": {
+                    "enum": [
+                        "terminal"
+                    ]
+                },
+                "[widget == 'box']": {
+                    "enum": [
+                        "metro"
                     ]
                 }
             }
