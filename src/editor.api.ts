@@ -28,8 +28,8 @@ export class ChartsEditor {
         (<any>self).MonacoEnvironment = {
             getWorker: function (moduleId: string, label: string) {
                 if (label === "axibaseCharts") {
-
-                    return new Worker(`${paths.ChartsWorker}?v=${VERSION}`);
+                    let sep = paths.ChartsWorker.indexOf("?") < 0 ? "?" : "&";
+                    return new Worker(`${paths.ChartsWorker}${sep}v=${VERSION}`);
                 }
 
                 return new Worker(paths.EditorWorker);
