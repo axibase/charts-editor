@@ -1,6 +1,36 @@
 import { ResourcesProviderBase, Setting } from "@axibase/charts-language-service";
+import { ExternalValueCompleters } from "@axibase/charts-language-service/types/completionProvider";
+import { AtsdFinancialComplete } from "./completeFinancial";
 
 interface IDictionary { $schema: string; settings: Setting[]; }
+
+const externalCompleters = initExternalCompleters();
+
+function initExternalCompleters(): ExternalValueCompleters {
+    let completers = {};
+
+    let addFinancialCompletions = getSharedSetting("financial");
+
+    if (addFinancialCompletions) {
+        Object.assign(completers, new AtsdFinancialComplete().getExternalValueCompleters());
+    }
+
+    return completers;
+}
+
+function getSharedSetting(name: string): any {
+    let urlParams = self.location.search;
+    if (urlParams[0] === "?") {
+        urlParams = urlParams.slice(1);
+    }
+    let params = urlParams.split("&");
+    for (let param of params) {
+        let [pname, value] = param.split("=");
+        if (pname === name) {
+            return value == null ? true : decodeURIComponent(value);
+        }
+    }
+}
 
 // TODO: refactor ResourcesProviderBase inheritance
 const ResourcesProvider = Object.create(ResourcesProviderBase.prototype);
@@ -32,5 +62,7 @@ ResourcesProvider.readDescriptions = () => {
 };
 
 ResourcesProvider.settingsMap = (ResourcesProvider as any).createSettingsMap();
+
+ResourcesProvider.getExternalValueCompleters = () => externalCompleters;
 
 export default ResourcesProvider;
