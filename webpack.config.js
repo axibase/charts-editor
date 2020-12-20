@@ -43,7 +43,8 @@ module.exports = {
       maxChunks: 1
     }),
     new CopyPlugin([
-      { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' }
+      { from: 'node_modules/monaco-editor-core/dev/vs/editor/editor.main.css', to: './' },
+      { from: '*.css', to: './', context: path.resolve(__dirname, "src", "css")  }
     ]),
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(new Date().getTime())
