@@ -3378,6 +3378,13 @@
             "section": "widget"
         },
         {
+            "displayName": "hide-gap",
+            "type": "interval",
+            "example": "0",
+            "widget": "chart",
+            "section": "widget"
+        },
+        {
             "displayName": "hide-empty-series",
             "type": "boolean",
             "example": false,
@@ -3391,6 +3398,13 @@
             "example": true,
             "widget": "table",
             "section": "series"
+        },
+        {
+            "displayName": "hide-interval",
+            "type": "interval",
+            "example": "8 hour",
+            "widget": "chart",
+            "section": "widget"
         },
         {
             "displayName": "horizontal",
@@ -7608,7 +7622,8 @@
                 "max_value_time",
                 "threshold_count",
                 "threshold_duration",
-                "threshold_percent"
+                "threshold_percent",
+                "ohlcv"
             ]
         },
         {
@@ -7636,7 +7651,8 @@
                 "max_value_time",
                 "threshold_count",
                 "threshold_duration",
-                "threshold_percent"
+                "threshold_percent",
+                "ohlcv"
             ]
         },
         {

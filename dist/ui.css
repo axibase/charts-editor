@@ -1,0 +1,45 @@
+.font-controls {
+    position: absolute;
+    background: rgba(0,0,0,0.05);
+    padding: 2px;
+    line-height: 1;
+    bottom: 8px;
+    right: 22px;
+    border-radius: 4px;
+    font-size: 10px;
+    z-index: 1;
+    transition: opacity ease-in-out 1s;
+}
+
+.font-controls .control-button {
+    color: #777;
+    margin: 2px;
+    border: none;
+    height: 12px;
+    width: 12px;
+    padding: 8px;
+    box-sizing: border-box;
+    box-shadow: none;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.font-controls .control-button.btn-plus {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMyA3SDlWM2MwLS41NS0uNDUtMS0xLTFzLTEgLjQ1LTEgMXY0SDNjLS41NSAwLTEgLjQ1LTEgMXMuNDUgMSAxIDFoNHY0YzAgLjU1LjQ1IDEgMSAxczEtLjQ1IDEtMVY5aDRjLjU1IDAgMS0uNDUgMS0xcy0uNDUtMS0xLTF6Ii8+PC9zdmc+');
+}
+
+.font-controls .control-button.btn-minus {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMyA3SDNjLS41NSAwLTEgLjQ1LTEgMXMuNDUgMSAxIDFoMTBjLjU1IDAgMS0uNDUgMS0xcy0uNDUtMS0xLTF6Ii8+PC9zdmc+');
+}
+
+.font-controls .control-button.btn-label {
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMy45MyAxNC42N0w4Ljk0LjY3aC0uMDFDOC43OS4yOCA4LjQzIDAgOCAwcy0uNzkuMjgtLjkzLjY3aC0uMDFsLTUgMTRoLjAxYy0uMDQuMS0uMDcuMjEtLjA3LjMzIDAgLjU1LjQ1IDEgMSAxIC40MyAwIC43OS0uMjguOTMtLjY3aC4wMUw1LjQ5IDExaDUuMDJsMS41NSA0LjM0aC4wMWMuMTQuMzguNS42Ni45My42Ni41NSAwIDEtLjQ1IDEtMSAwLS4xMi0uMDMtLjIzLS4wNy0uMzN6TTYuMiA5TDggMy45NyA5LjggOUg2LjJ6Ii8+PC9zdmc+');
+}
+
+.font-controls .control-button:not(.btn-label):hover {
+    background-color: rgba(0,0,0,0.07);
+    color: #333;
+}

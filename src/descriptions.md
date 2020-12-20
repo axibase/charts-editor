@@ -167,6 +167,8 @@ Widget setting changed upon drop-down list selection. To update the widget subse
 Displays background circle.  
   
 ## class
+
+Financial instrument class code. Use only with symbol and a trade metric.
   
 ## collapsible  
   
@@ -785,8 +787,19 @@ Show or hide columns with no data.
 ## hideemptyseries  
   
 Hide series for which no data exists or data whose validity is expired.  
+
+## hidegap
+
+Controls the length of empty space replacement for hidden intrvals. If intervals
+should be completely removed, set `hide-gap = 0`. By default `hide-gap` is equal to
+0.1 of `hide-interval` value
   
 ## hideifempty  
+
+## hideinterval
+
+Removes an interval without trades from time line if it's length is more than given interval.
+Such intervals are replaced with empty space with length controlled by `hide-gap` setting.
   
 ## horizontal  
   
@@ -1533,7 +1546,9 @@ Statistical function applied to values within each period.
 JavaScript expression returning caption used for cell if `collapsible = true`.  
 
 ## symbol
-  
+
+Financial instrument symbol. Use only with a class and a trade metric.
+
 ## table  
   
 Use as an alternative to `metric` setting.  
